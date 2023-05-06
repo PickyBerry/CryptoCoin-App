@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun CoinsListScreen(
+    navController: NavController,
     viewModel: CoinsListViewModel = hiltViewModel(),
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(
@@ -58,7 +60,7 @@ fun CoinsListScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
-                                //navigate
+                                navController.navigate("details")
                             }
                             .padding(16.dp)
                     )

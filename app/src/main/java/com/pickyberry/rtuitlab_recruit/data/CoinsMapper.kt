@@ -5,10 +5,10 @@ import com.pickyberry.rtuitlab_recruit.data.network.CoinDto
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
 
 fun CoinItemEntity.asCoinItem() =
-    CoinItem(id = this.id, name = this.name, symbol = this.symbol, rank = this.rank)
+    CoinItem(id = this.id, name = this.name, symbol = this.symbol)
 
 fun CoinItem.asCoinItemEntity() =
-    CoinItemEntity(id = this.id, name = this.name, symbol = this.symbol, rank = this.rank)
+    CoinItemEntity(id = this.id, name = this.name, symbol = this.symbol)
 
 fun CoinDto.asCoinItem() =
-    CoinItem(id = this.id, name = this.name, symbol = this.symbol, rank = this.rank)
+    CoinItem(id = this.id, name = this.name, symbol = this.symbol)

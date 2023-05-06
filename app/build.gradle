@@ -19,12 +19,20 @@ android {
 
     defaultConfig {
         applicationId "com.pickyberry.rtuitlab_recruit"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
     }
 
     buildTypes {
@@ -75,6 +83,11 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.7.1'
     implementation("androidx.navigation:navigation-compose:2.6.0-beta01")
 
+
+    //Chart
+    implementation "com.patrykandpatrick.vico:core:1.6.5"
+    implementation "com.patrykandpatrick.vico:compose:1.6.5"
+    implementation "com.patrykandpatrick.vico:compose-m3:1.6.5"
 
     //Hilt
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'

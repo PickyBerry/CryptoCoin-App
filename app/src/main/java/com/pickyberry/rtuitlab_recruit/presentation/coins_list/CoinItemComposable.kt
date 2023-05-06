@@ -18,9 +18,10 @@ fun CoinItemComposable(
     coinItem: CoinItem,
     modifier: Modifier = Modifier
 ) {
+
     Row(
         modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
             modifier = Modifier.weight(1f)
@@ -41,7 +42,7 @@ fun CoinItemComposable(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "(${coinItem.symbol})",
-                fontStyle = FontStyle.Italic,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colors.onBackground
             )
         }

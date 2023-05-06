@@ -1,6 +1,7 @@
 package com.pickyberry.rtuitlab_recruit.data
 
 import android.app.Application
+import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.network.Api
 import com.pickyberry.rtuitlab_recruit.data.network.CoinDto
@@ -47,6 +48,10 @@ class CoinRepositoryImpl @Inject constructor(
                 ))
                 emit(Resource.Loading(false))
             }
+        }
+        val data = api.getHistorical("bitcoin","rub")
+        if (data.isSuccessful) {
+            Log.e("aaaa",data.body().toString())
         }
     }
 
