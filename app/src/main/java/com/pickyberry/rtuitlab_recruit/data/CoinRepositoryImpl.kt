@@ -49,10 +49,6 @@ class CoinRepositoryImpl @Inject constructor(
                 emit(Resource.Loading(false))
             }
         }
-        val data = api.getHistorical("bitcoin","rub")
-        if (data.isSuccessful) {
-            Log.e("aaaa",data.body().toString())
-        }
     }
 
     private fun handleResponse(response: retrofit2.Response<List<CoinDto>>): Resource<List<CoinItem>> {

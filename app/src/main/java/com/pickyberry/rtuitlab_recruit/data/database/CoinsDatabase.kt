@@ -5,11 +5,21 @@ import androidx.room.migration.AutoMigrationSpec
 
 @Database(
     entities = [CoinItemEntity::class],
-    version = 2,
+    version = 4,
     autoMigrations = [
         AutoMigration (
             from = 1,
             to = 2,
+            spec = CoinsDatabase.CoinAutoMigration::class
+        ),
+        AutoMigration (
+            from = 2,
+            to = 3,
+            spec = CoinsDatabase.CoinAutoMigration::class
+        ),
+        AutoMigration (
+            from = 3,
+            to = 4,
             spec = CoinsDatabase.CoinAutoMigration::class
         )
     ],
@@ -20,4 +30,5 @@ abstract class CoinsDatabase : RoomDatabase() {
 
     @DeleteColumn(tableName="CoinItemEntity",columnName = "rank")
     class CoinAutoMigration : AutoMigrationSpec
+
 }

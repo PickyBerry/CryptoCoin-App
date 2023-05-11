@@ -1,10 +1,12 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.line.lineChart
+import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.axis.AxisPosition
 import com.patrykandpatrick.vico.core.axis.formatter.AxisValueFormatter
 import com.patrykandpatrick.vico.core.entry.ChartEntry
@@ -29,11 +31,13 @@ val axisValueFormatter = AxisValueFormatter<AxisPosition.Horizontal.Bottom> { va
 
 
 @Composable
-fun myChart(chartEntryModelProducer: ChartEntryModelProducer) {
-    Chart(
-        chart = lineChart(),
-        chartModelProducer = chartEntryModelProducer,
-        startAxis = startAxis(),
-        bottomAxis = bottomAxis(valueFormatter = axisValueFormatter),
-    )
+fun HistoricalDataChart(chartEntryModelProducer: ChartEntryModelProducer) {
+    ProvideChartStyle(rememberChartStyle(listOf(MaterialTheme.colors.secondary))) {
+        Chart(
+            chart = lineChart(),
+            chartModelProducer = chartEntryModelProducer,
+            startAxis = startAxis(),
+            bottomAxis = bottomAxis(valueFormatter = axisValueFormatter),
+        )
+    }
 }
