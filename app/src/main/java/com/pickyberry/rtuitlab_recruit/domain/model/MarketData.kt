@@ -7,8 +7,7 @@ data class MarketData(
     val marketCap: Currencies? = Currencies(),
     val fullyDilutedValuation: Currencies? = Currencies(),
     val totalVolume: Currencies? = Currencies(),
-    val totalSupply: Int? = null,
-    val maxSupply: Int? = null,
-    val circulatingSupply: Int? = null,
-    val lastUpdated: String? = null
+    val totalSupply: Double? = null,
+    val maxSupply: Double? = null,
+    val circulatingSupply: Double? = null,
 )

@@ -9,15 +9,21 @@ import androidx.navigation.compose.rememberNavController
 import com.pickyberry.rtuitlab_recruit.presentation.coin_details.CoinDetailsScreen
 import com.pickyberry.rtuitlab_recruit.presentation.coins_list.CoinsListScreen
 
+const val DestinationListRoute = "list"
+const val DestinationDetailsRoot = "details"
+const val DestinationListArg = "id"
+const val DestinationDetailsRoute = "$DestinationDetailsRoot/{$DestinationListArg}"
 
 @Composable
 fun CoinApp() {
     val navController = rememberNavController()
     NavHost(navController, startDestination = "list") {
-        composable(route = "list") {
-            CoinsListScreen(navController)
+        composable(route = DestinationListRoute) {
+            CoinsListScreen(navController, onNavigate = { argument ->
+                navController.navigate("$DestinationDetailsRoot/$argument")
+            })
         }
-        composable(route = "details") {
+        composable(route = DestinationDetailsRoute) {
             CoinDetailsScreen(navController)
         }
     }

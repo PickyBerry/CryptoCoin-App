@@ -7,9 +7,9 @@ import com.pickyberry.rtuitlab_recruit.data.network.details.CoinDetailsLinkDto
 import com.pickyberry.rtuitlab_recruit.data.network.details.CoinDetailsMarketDataDto
 
 class CoinDetails(
-    val id: String? = null,
-    val symbol: String? = null,
-    val name: String? = null,
+    val id: String,
+    val symbol: String,
+    val name: String,
     val hashingAlgorithm: String? = null,
     val description: List<String>? = null,
     val links: List<String>? = null,

@@ -1,11 +1,11 @@
 package com.pickyberry.rtuitlab_recruit.data
 
 import android.app.Application
-import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
+import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetails
 import com.pickyberry.rtuitlab_recruit.data.network.Api
-import com.pickyberry.rtuitlab_recruit.data.network.CoinDto
 import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
+import com.pickyberry.rtuitlab_recruit.domain.model.CoinDetails
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
 import com.pickyberry.rtuitlab_recruit.util.InternetValidation
 import com.pickyberry.rtuitlab_recruit.util.Resource
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class CoinRepositoryImpl @Inject constructor(
+class CoinRepositoryImpl  @Inject constructor(
     private val api: Api,
     private val db: CoinsDatabase,
     private val application: Application,
@@ -36,9 +36,13 @@ class CoinRepositoryImpl @Inject constructor(
 
         if (InternetValidation.hasInternetConnection(application)) {
             val response = api.getAllCoins()
-            val coins = handleResponse(response)
-            coins.data?.let { data ->
-                emit(Resource.Success(data))
+            val coins = if (response.isSuccessful) {
+                response.body()?.let { resultResponse ->
+                    Resource.Success(resultResponse.map { it.asCoinItem() })
+                }
+            } else Resource.Error(response.message())
+            coins?.data?.let { data ->
+                //      emit(Resource.Success(data))
                 db.dao.clearCoins()
                 db.dao.insertCoinItems(
                     data.map { it.asCoinItemEntity() }
@@ -51,13 +55,42 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    private fun handleResponse(response: retrofit2.Response<List<CoinDto>>): Resource<List<CoinItem>> {
-        if (response.isSuccessful) {
-            response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse.map { it.asCoinItem() })
+    override suspend fun getCoinDetails(
+        id: String,
+        offlineFirst: Boolean,
+    ): Flow<Resource<CoinDetails>> = flow {
+        if (InternetValidation.hasInternetConnection(application)) {
+            val response = api.getCoinDetails(id)
+            val coinDetails = if (response.isSuccessful)
+                response.body()?.let {
+                    Resource.Success(it.asCoinDetails())
+                }
+            else Resource.Error(response.message())
+            coinDetails?.data?.let { data ->
+                emit(Resource.Success(data))
+                emit(Resource.Loading(false))
             }
         }
-        return Resource.Error(response.message())
+    }
+
+
+    override suspend fun getHistoricalData(
+        id: String,
+        currency: String,
+        offlineFirst: Boolean,
+    ): Flow<Resource<List<List<Float>>>> = flow {
+        if (InternetValidation.hasInternetConnection(application)) {
+            val response = api.getHistoricalData(id, currency)
+            val coinDetails = if (response.isSuccessful)
+                response.body()?.let {
+                    Resource.Success(it.prices)
+                }
+            else Resource.Error(response.message())
+            coinDetails?.data?.let { data ->
+                emit(Resource.Success(data))
+                emit(Resource.Loading(false))
+            }
+        }
     }
 
 }
