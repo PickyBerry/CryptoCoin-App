@@ -8,7 +8,7 @@ data class CoinDetailsMarketDataDto(
     @SerializedName("market_cap") var marketCap: CoinDetailsMarketCapDto? = CoinDetailsMarketCapDto(),
     @SerializedName("fully_diluted_valuation") var fullyDilutedValuation: CoinDetailsValuationDto? = CoinDetailsValuationDto(),
     @SerializedName("total_volume") var totalVolume: CoinDetailsTotalVolumeDto? = CoinDetailsTotalVolumeDto(),
-    @SerializedName("total_supply") var totalSupply: Double? = null,
+ //   @SerializedName("total_supply") var totalSupply: Double? = null,
     @SerializedName("max_supply") var maxSupply: Double? = null,
     @SerializedName("circulating_supply") var circulatingSupply: Double? = null,
 )

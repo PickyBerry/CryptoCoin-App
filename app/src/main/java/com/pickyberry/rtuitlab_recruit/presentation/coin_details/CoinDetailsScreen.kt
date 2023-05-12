@@ -1,6 +1,5 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -11,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -19,18 +19,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
-import com.himanshoe.charty.bar.BarChart
-import com.himanshoe.charty.bar.model.BarData
-import com.himanshoe.charty.line.CurveLineChart
-import com.himanshoe.charty.line.model.LineData
-import com.patrykandpatrick.vico.core.entry.ChartEntryModelProducer
 import com.pickyberry.rtuitlab_recruit.R
-import kotlin.math.roundToInt
 
 
 @Composable
@@ -73,21 +66,19 @@ fun CoinDetailsScreen(
                         color = MaterialTheme.colors.onBackground,
                     )
                 }
-            }/*
-            HistoricalDataChart(viewModel.state.historicalData.map { it[0] to it[1] }.toList()
-                .mapIndexed { index, (x, y) ->
-                    Entry(x, y)
-                }
-                .let { ChartEntryModelProducer(it) }) */
-            Log.e("data",viewModel.state.historicalData.map { it[0] to it[1] }.toList().toString())
-            Spacer(modifier = Modifier.height(30.dp))
-         /*   LinearTransactionsChart(
-                data = viewModel.state.historicalData.map { it[0] to it[1] }.toList(),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(350.dp)
-                    .align(Alignment.CenterHorizontally)
-            ) */
+            }
+            Spacer(modifier = Modifier.height(60.dp))
+            if (viewModel.state.historicalData.isNotEmpty()) {
+                HistoricalDataChart(
+                    data = viewModel.state.historicalData.map { it[0] to it[1] }.toList(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(end=20.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+            }
+
         }
     }
 

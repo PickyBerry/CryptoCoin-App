@@ -34,7 +34,7 @@ fun CoinDetailsDto.asCoinDetails() = CoinDetails(
             usd = this.marketData?.totalVolume?.usd,
             rub = this.marketData?.totalVolume?.rub
         ),
-        totalSupply = this.marketData?.totalSupply,
+     //   totalSupply = this.marketData?.totalSupply,
         maxSupply = this.marketData?.maxSupply,
         circulatingSupply = this.marketData?.circulatingSupply,
     )
