@@ -54,7 +54,7 @@ fun HistoricalDataChart(
         (0..5).forEach { i ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    round(min + step * i).toString(),
+                    (min + step * i).toString(),
                     30f,
                     size.height - spacing - i * size.height / 5f,
                     Paint()
