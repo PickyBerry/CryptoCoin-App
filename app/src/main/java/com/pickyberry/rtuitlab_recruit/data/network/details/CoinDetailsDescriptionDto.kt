@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CoinDetailsDescriptionDto (
 
-    @SerializedName("en" ) var en : String? = null,
-    @SerializedName("ru" ) var ru : String? = null
+    @SerializedName("en" ) var en : String = "",
+    @SerializedName("ru" ) var ru : String = ""
 
 )

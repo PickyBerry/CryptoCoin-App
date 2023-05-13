@@ -1,0 +1,107 @@
+package com.pickyberry.rtuitlab_recruit.presentation.coin_details
+
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.pickyberry.rtuitlab_recruit.domain.model.MarketData
+
+@Composable
+fun MarketDataComposable(marketData: MarketData, currency: String) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Surface(
+            color = MaterialTheme.colors.primary,
+            shape = RoundedCornerShape(6.dp),
+            border = BorderStroke(2.dp, MaterialTheme.colors.onBackground),
+            modifier = Modifier.width(300.dp).padding(start = 10.dp, end = 10.dp),
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(5.dp))
+
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column(modifier = Modifier.width(150.dp)) {
+                        Divider(color = MaterialTheme.colors.secondary, thickness = 4.dp)
+                    }
+                }
+
+                if (marketData.marketCap?.usd != null && marketData.marketCap.rub != null)
+                    MarketDataItem(
+                        "Market Cap",
+                        if (currency == "usd") marketData.marketCap.usd else marketData.marketCap.rub,
+                        currency
+                    )
+
+                if (marketData.fullyDilutedValuation?.usd != null && marketData.fullyDilutedValuation.rub != null)
+                    MarketDataItem(
+                        "Fully Diluted Valuation",
+                        if (currency == "usd") marketData.fullyDilutedValuation.usd else marketData.fullyDilutedValuation.rub,
+                        currency
+                    )
+
+                if (marketData.totalVolume?.usd != null && marketData.totalVolume.rub != null)
+                    MarketDataItem(
+                        "Total Volume",
+                        if (currency == "usd") marketData.totalVolume.usd else marketData.totalVolume.rub,
+                        currency
+                    )
+                if (marketData.totalSupply != null)
+                    MarketDataItem(
+                        "Total Supply",
+                        marketData.totalSupply
+                    )
+                if (marketData.maxSupply != null)
+                    MarketDataItem(
+                        "Max Supply",
+                        marketData.maxSupply
+                    )
+                if (marketData.circulatingSupply != null)
+                    MarketDataItem(
+                        "Circulating Supply",
+                        marketData.circulatingSupply
+                    )
+                Spacer(modifier = Modifier.height(5.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun MarketDataItem(name: String, value: Double, currency: String = "") {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.padding(5.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = name,
+                modifier = Modifier.weight(1f)
+            )
+            Text(
+                text = (if (currency == "usd") "$" else if (currency == "rub") "₽" else "") + value.toLong().toString(),
+                modifier = Modifier.weight(1f),
+                textAlign = TextAlign.End
+            )
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+        Column(modifier = Modifier.width(150.dp)) {
+            Divider(color = MaterialTheme.colors.secondary, thickness = 4.dp)
+        }
+    }
+}

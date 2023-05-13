@@ -11,8 +11,8 @@ class CoinDetails(
     val symbol: String,
     val name: String,
     val hashingAlgorithm: String? = null,
-    val description: List<String>? = null,
-    val links: List<String>? = null,
+    val description: List<String> = listOf(),
+    val links: Map<String,String> = mapOf(),
     val image: String? = null,
     val marketData: MarketData = MarketData(),
 )

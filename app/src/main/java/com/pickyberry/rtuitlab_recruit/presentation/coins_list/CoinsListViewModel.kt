@@ -27,7 +27,7 @@ class CoinsListViewModel @Inject constructor(
         getCoinsList()
     }
 
-    fun refresh() = getCoinsList(offlineFirst = false)
+    fun refresh() = getCoinsList(offlineFirst = false,query=state.query.lowercase())
 
     fun search(query: String) {
         state = state.copy(query = query)
@@ -50,10 +50,12 @@ class CoinsListViewModel @Inject constructor(
                     when (result) {
                         is Resource.Success -> {
                             result.data?.let {
-                                state = state.copy(coins = it)
+                                state = state.copy(coins = it,error="")
                             }
                         }
-                        is Resource.Error -> Unit
+                        is Resource.Error -> {
+                            state=state.copy(error = result.message!!)
+                        }
                         is Resource.Loading -> {
                             state = state.copy(isLoading = result.isLoading)
                         }

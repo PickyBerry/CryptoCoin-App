@@ -26,9 +26,9 @@ fun HistoricalDataChart(
     val max = remember(data) { data.maxOfOrNull { it.second }?.toFloat() ?: 1f }
     val min = remember(data) { data.minOfOrNull { it.second }?.toFloat() ?: 0f }
     val lineColor = MaterialTheme.colors.secondary
-
+    val textColor=MaterialTheme.colors.onPrimary.toArgb()
     val paintForHorizontalAxis = Paint().apply {
-        color = android.graphics.Color.BLACK
+        color = textColor
         textAlign = Paint.Align.CENTER
         textSize = 20f
     }
@@ -36,7 +36,7 @@ fun HistoricalDataChart(
     Canvas(modifier = modifier) {
 
 
-        val months = getMonthAbbreviations(data[0].first.toLong())
+        val months = getMonthNames(data[0].first.toLong())
         val spaceBetweenMonths = (size.width - spacing) / months.size
         months.forEachIndexed{index,it ->
             drawContext.canvas.nativeCanvas.apply {
@@ -54,10 +54,10 @@ fun HistoricalDataChart(
         (0..5).forEach { i ->
             drawContext.canvas.nativeCanvas.apply {
                 drawText(
-                    (min + step * i).toString(),
-                    30f,
+                    String.format("%.3f",min + step * i),
+                    60f,
                     size.height - spacing - i * size.height / 5f,
-                    Paint()
+                    paintForHorizontalAxis
                 )
             }
         }
@@ -91,7 +91,7 @@ fun HistoricalDataChart(
     }
 }
 
-fun getMonthAbbreviations(timestamp: Long): List<String> {
+fun getMonthNames(timestamp: Long): List<String> {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = timestamp
     val monthNames = arrayOf("JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER")

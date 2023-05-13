@@ -1,6 +1,7 @@
 package com.pickyberry.rtuitlab_recruit.data
 
 import android.app.Application
+import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetails
 import com.pickyberry.rtuitlab_recruit.data.network.Api
@@ -27,14 +28,15 @@ class CoinRepositoryImpl  @Inject constructor(
 
         emit(Resource.Loading(true))
 
-        val localData = db.dao.search(query)
-        emit(Resource.Success(data = localData.map { it.asCoinItem() }))
-        if ((offlineFirst && localData.isNotEmpty()) || !query.isBlank()) {
+
+        if (offlineFirst && query.isNotBlank() || !InternetValidation.hasInternetConnection(application)) {
+            val localData = db.dao.search(query)
+            emit(Resource.Success(data = localData.map { it.asCoinItem() }))
+            if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
             emit(Resource.Loading(false))
             return@flow
         }
-
-        if (InternetValidation.hasInternetConnection(application)) {
+        else  {
             val response = api.getAllCoins()
             val coins = if (response.isSuccessful) {
                 response.body()?.let { resultResponse ->
@@ -42,14 +44,9 @@ class CoinRepositoryImpl  @Inject constructor(
                 }
             } else Resource.Error(response.message())
             coins?.data?.let { data ->
-                //      emit(Resource.Success(data))
                 db.dao.clearCoins()
-                db.dao.insertCoinItems(
-                    data.map { it.asCoinItemEntity() }
-                )
-                emit(Resource.Success(
-                    data = db.dao.search("").map { it.asCoinItem() }
-                ))
+                db.dao.insertCoinItems(data.map { it.asCoinItemEntity() })
+                emit(Resource.Success(data = db.dao.search(query).map { it.asCoinItem() }))
                 emit(Resource.Loading(false))
             }
         }

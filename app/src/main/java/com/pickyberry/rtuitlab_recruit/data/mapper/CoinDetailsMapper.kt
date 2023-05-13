@@ -11,9 +11,9 @@ fun CoinDetailsDto.asCoinDetails() = CoinDetails(
     name = this.name,
     hashingAlgorithm = this.hashingAlgorithm,
     description = listOf(this.description?.en ?: "", this.description?.ru ?: ""),
-    links = listOf(
-        this.links?.homepage?.getOrNull(0) ?: "",
-        this.links?.blockchainSite?.getOrNull(0) ?: ""
+    links = mapOf(
+        Pair("homepage",this.links?.homepage?.getOrNull(0) ?: ""),
+        Pair("blockchain_site", this.links?.blockchainSite?.getOrNull(0) ?: "")
     ),
     image = this.image?.large,
     marketData = MarketData(
@@ -21,7 +21,6 @@ fun CoinDetailsDto.asCoinDetails() = CoinDetails(
             usd = this.marketData?.currentPrice?.usd,
             rub = this.marketData?.currentPrice?.rub
         ),
-        totalValueLocked = this.marketData?.totalValueLocked,
         marketCap = Currencies(
             usd = this.marketData?.marketCap?.usd,
             rub = this.marketData?.marketCap?.rub
@@ -34,7 +33,7 @@ fun CoinDetailsDto.asCoinDetails() = CoinDetails(
             usd = this.marketData?.totalVolume?.usd,
             rub = this.marketData?.totalVolume?.rub
         ),
-     //   totalSupply = this.marketData?.totalSupply,
+        totalSupply = this.marketData?.totalSupply,
         maxSupply = this.marketData?.maxSupply,
         circulatingSupply = this.marketData?.circulatingSupply,
     )
