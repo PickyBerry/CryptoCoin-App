@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetails
+import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetailsEntity
 import com.pickyberry.rtuitlab_recruit.data.network.Api
 import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinDetails
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class CoinRepositoryImpl  @Inject constructor(
+class CoinRepositoryImpl @Inject constructor(
     private val api: Api,
     private val db: CoinsDatabase,
     private val application: Application,
@@ -29,14 +30,16 @@ class CoinRepositoryImpl  @Inject constructor(
         emit(Resource.Loading(true))
 
 
-        if (offlineFirst && query.isNotBlank() || !InternetValidation.hasInternetConnection(application)) {
-            val localData = db.dao.search(query)
-            emit(Resource.Success(data = localData.map { it.asCoinItem() }))
-            if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
-            emit(Resource.Loading(false))
+        val localData = db.coinItemDao.search(query)
+        emit(Resource.Success(data = localData.map { it.asCoinItem() }))
+        if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
+        emit(Resource.Loading(false))
+        if (offlineFirst && query.isNotBlank() || !InternetValidation.hasInternetConnection(
+                application
+            )
+        )
             return@flow
-        }
-        else  {
+        else {
             val response = api.getAllCoins()
             val coins = if (response.isSuccessful) {
                 response.body()?.let { resultResponse ->
@@ -44,9 +47,9 @@ class CoinRepositoryImpl  @Inject constructor(
                 }
             } else Resource.Error(response.message())
             coins?.data?.let { data ->
-                db.dao.clearCoins()
-                db.dao.insertCoinItems(data.map { it.asCoinItemEntity() })
-                emit(Resource.Success(data = db.dao.search(query).map { it.asCoinItem() }))
+                db.coinItemDao.clearCoins()
+                db.coinItemDao.insertCoinItems(data.map { it.asCoinItemEntity() })
+                emit(Resource.Success(data = db.coinItemDao.search(query).map { it.asCoinItem() }))
                 emit(Resource.Loading(false))
             }
         }
@@ -56,7 +59,17 @@ class CoinRepositoryImpl  @Inject constructor(
         id: String,
         offlineFirst: Boolean,
     ): Flow<Resource<CoinDetails>> = flow {
-        if (InternetValidation.hasInternetConnection(application)) {
+
+        emit(Resource.Loading(true))
+
+
+        val localData = db.coinDetailsDao.getCoinDetails(id)
+        if (localData!=null) emit(Resource.Success(data = localData.asCoinDetails()))
+        if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
+        emit(Resource.Loading(false))
+        if (offlineFirst || !InternetValidation.hasInternetConnection(application))
+            return@flow
+        else {
             val response = api.getCoinDetails(id)
             val coinDetails = if (response.isSuccessful)
                 response.body()?.let {
@@ -66,6 +79,7 @@ class CoinRepositoryImpl  @Inject constructor(
             coinDetails?.data?.let { data ->
                 emit(Resource.Success(data))
                 emit(Resource.Loading(false))
+                db.coinDetailsDao.insertCoinDetails(data.asCoinDetailsEntity())
             }
         }
     }
@@ -76,7 +90,15 @@ class CoinRepositoryImpl  @Inject constructor(
         currency: String,
         offlineFirst: Boolean,
     ): Flow<Resource<List<List<Float>>>> = flow {
-        if (InternetValidation.hasInternetConnection(application)) {
+        emit(Resource.Loading(true))
+
+   /*     val localData = db.historicalDataDao.getHistoricalData(id + "_$currency")
+        emit(Resource.Success(data = localData.prices.map { pair -> listOf(pair.first, pair.second) }))
+        if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
+        emit(Resource.Loading(false))
+        if (offlineFirst || !InternetValidation.hasInternetConnection(application))
+            return@flow
+        else { */
             val response = api.getHistoricalData(id, currency)
             val coinDetails = if (response.isSuccessful)
                 response.body()?.let {
@@ -87,7 +109,7 @@ class CoinRepositoryImpl  @Inject constructor(
                 emit(Resource.Success(data))
                 emit(Resource.Loading(false))
             }
-        }
+     //   }
     }
 
 }

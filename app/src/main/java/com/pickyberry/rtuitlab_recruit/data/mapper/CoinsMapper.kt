@@ -1,7 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.data
 
-import androidx.compose.ui.text.toUpperCase
-import com.pickyberry.rtuitlab_recruit.data.database.CoinItemEntity
+import com.pickyberry.rtuitlab_recruit.data.database.entity.CoinItemEntity
 import com.pickyberry.rtuitlab_recruit.data.network.CoinDto
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
 

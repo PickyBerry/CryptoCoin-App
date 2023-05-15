@@ -34,8 +34,8 @@ class DataModule {
         return Room.databaseBuilder(
             app,
             CoinsDatabase::class.java,
-            "stockdb.db"
-        ).build()
+            "cryptocoinsdb.db"
+        ).fallbackToDestructiveMigration().build()
     }
 
 }

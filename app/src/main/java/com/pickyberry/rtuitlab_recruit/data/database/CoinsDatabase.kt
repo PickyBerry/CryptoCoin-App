@@ -2,31 +2,25 @@ package com.pickyberry.rtuitlab_recruit.data.database
 
 import androidx.room.*
 import androidx.room.migration.AutoMigrationSpec
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.pickyberry.rtuitlab_recruit.data.database.dao.CoinDetailsDao
+import com.pickyberry.rtuitlab_recruit.data.database.dao.CoinItemDao
+import com.pickyberry.rtuitlab_recruit.data.database.dao.HistoricalDataDao
+import com.pickyberry.rtuitlab_recruit.data.database.entity.CoinDetailsEntity
+import com.pickyberry.rtuitlab_recruit.data.database.entity.CoinItemEntity
+import com.pickyberry.rtuitlab_recruit.data.database.entity.HistoricalDataEntity
 
 @Database(
-    entities = [CoinItemEntity::class],
-    version = 4,
-    autoMigrations = [
-        AutoMigration (
-            from = 1,
-            to = 2,
-            spec = CoinsDatabase.CoinAutoMigration::class
-        ),
-        AutoMigration (
-            from = 2,
-            to = 3,
-            spec = CoinsDatabase.CoinAutoMigration::class
-        ),
-        AutoMigration (
-            from = 3,
-            to = 4,
-            spec = CoinsDatabase.CoinAutoMigration::class
-        )
-    ],
+    entities = [CoinItemEntity::class,CoinDetailsEntity::class,HistoricalDataEntity::class],
+    version = 6,
     exportSchema = true
 )
+@TypeConverters(RoomConverter::class)
 abstract class CoinsDatabase : RoomDatabase() {
-    abstract val dao: CoinItemDao
+    abstract val coinItemDao: CoinItemDao
+    abstract val coinDetailsDao: CoinDetailsDao
+    abstract val historicalDataDao: HistoricalDataDao
 
     @DeleteColumn(tableName="CoinItemEntity",columnName = "rank")
     class CoinAutoMigration : AutoMigrationSpec

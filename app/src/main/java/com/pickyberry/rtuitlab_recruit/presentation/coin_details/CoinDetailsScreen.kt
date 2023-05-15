@@ -5,6 +5,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +37,35 @@ fun CoinDetailsScreen(
     val swipeRefreshState = rememberSwipeRefreshState(
         isRefreshing = viewModel.state.isLoading
     )
+
+
+
     LazyColumn(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.primary)) {
+
+        item {
+            TopAppBar(
+                title = { Text(text = "Coin Details") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            ""
+                        )
+                    }
+                },
+                actions = {
+                    TextButton(
+                        onClick = { },
+                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                    ) { Text(text = "USD", fontSize = 16.sp) }
+                    IconButton(onClick = { }) { Icon(Icons.Filled.Star, "") }
+                    IconButton(onClick = { }) { Icon(Icons.Filled.Notifications, "") }
+                },
+                backgroundColor = MaterialTheme.colors.primary,
+                contentColor = MaterialTheme.colors.onPrimary
+            )
+
+        }
         item {
             if (viewModel.state.isLoading) {
                 LinearProgressIndicator(modifier = Modifier.fillMaxSize())
@@ -70,14 +102,6 @@ fun CoinDetailsScreen(
                         )
                     }
                     Spacer(modifier = Modifier.width(20.dp))
-                    Button(
-                        onClick = { /* handle button click */ },
-                        colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.onBackground),
-                        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-                        modifier = Modifier.size(width = 80.dp, height = 40.dp)
-                    ) {
-                        Text(text = "USD", color = Color.White)
-                    }
                 }
                 Spacer(modifier = Modifier.height(60.dp))
                 if (viewModel.state.historicalData.isNotEmpty()) {
@@ -106,20 +130,24 @@ fun CoinDetailsScreen(
                 Spacer(modifier = Modifier.height(10.dp))
                 MarketDataComposable(viewModel.state.coinDetails?.marketData!!, "usd")
                 Spacer(modifier = Modifier.height(10.dp))
-                if (viewModel.state.coinDetails?.links?.isNotEmpty() == true) LinksComposable(viewModel.state.coinDetails?.links!!)
+                if (viewModel.state.coinDetails?.links?.isNotEmpty() == true) LinksComposable(
+                    viewModel.state.coinDetails?.links!!
+                )
                 Spacer(modifier = Modifier.height(10.dp))
 
-                if (viewModel.state.coinDetails?.hashingAlgorithm !=null) {
-                    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
-                    Text(
-                        "HASHING ALGORITHM ${viewModel.state.coinDetails?.hashingAlgorithm}",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        color = MaterialTheme.colors.onBackground
-                    )
+                if (viewModel.state.coinDetails?.hashingAlgorithm != null) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            "HASHING ALGORITHM ${viewModel.state.coinDetails?.hashingAlgorithm}",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp,
+                            color = MaterialTheme.colors.onBackground
+                        )
                     }
                 }
-
 
 
             }
