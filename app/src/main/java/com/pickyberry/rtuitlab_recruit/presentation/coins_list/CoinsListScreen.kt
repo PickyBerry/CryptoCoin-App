@@ -2,7 +2,6 @@ package com.pickyberry.rtuitlab_recruit.presentation.coins_list
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,6 +13,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,14 +22,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.zxing.integration.android.IntentIntegrator
 import com.pickyberry.rtuitlab_recruit.presentation.ScannerCaptureActivity
-import java.util.Scanner
 
 
 @Composable
@@ -89,6 +88,7 @@ fun CoinsListScreen(
         SwipeRefresh(
             state = swipeRefreshState,
             onRefresh = {
+                viewModel.toggleFavorites(false)
                 viewModel.refresh()
             }
         ) {
@@ -98,6 +98,32 @@ fun CoinsListScreen(
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
+
+
+                    item {
+                        val selectedTabIndex = remember { mutableStateOf(if (viewModel.state.displayingFavorites) 1 else 0) }
+                        TabRow(
+                            selectedTabIndex = selectedTabIndex.value,
+                            backgroundColor = MaterialTheme.colors.primary
+                        ) {
+                            Tab(
+                                selected = selectedTabIndex.value == 0,
+                                onClick = { viewModel.toggleFavorites(false)
+                                    selectedTabIndex.value=0 },
+                                text = { Text("All Coins") }
+                            )
+                            Tab(
+                                selected = selectedTabIndex.value == 1,
+                                onClick = { viewModel.toggleFavorites(true)
+                                    selectedTabIndex.value=1},
+                                text = { Text("Favorite Coins") }
+                            )
+                        }
+                    }
+
+
+
+
                     item {
 
                         Row(
@@ -150,6 +176,7 @@ fun CoinsListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
+                                    viewModel.toggleFavorites(false)
                                     onNavigate(coinItem.id)
                                 }
                                 .padding(16.dp)

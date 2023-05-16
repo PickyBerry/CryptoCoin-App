@@ -34,5 +34,13 @@ interface CoinItemDao {
     @Query("SELECT isFavorite FROM coin_item_entity WHERE id = :id")
     fun isCoinFavorite(id: String): Boolean?
 
-
+    @Query(
+        """
+            SELECT *
+            FROM coin_item_entity
+            WHERE (LOWER(name) LIKE '%' || LOWER(:query) || '%' OR
+            UPPER(:query) == symbol) AND (isFavorite == true)
+        """
+    )
+    suspend fun searchFavorites(query:String):List<CoinItemEntity>
 }

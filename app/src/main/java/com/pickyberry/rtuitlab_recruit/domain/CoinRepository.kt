@@ -1,9 +1,7 @@
 package com.pickyberry.rtuitlab_recruit.domain
 
-import com.pickyberry.rtuitlab_recruit.data.network.HistoricalDataDto
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinDetails
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
-import com.pickyberry.rtuitlab_recruit.domain.model.Currencies
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -24,7 +22,9 @@ interface CoinRepository {
         offlineFirst: Boolean
     ):Flow<Resource<List<Pair<Float,Float>>>>
 
-    suspend fun toggleFavoriteState(id: String)
+    suspend fun toggleCoinFavoriteState(id: String)
+
+    suspend fun getFavorites(query: String): Flow<Resource<List<CoinItem>>>
 
     suspend fun isCoinFavorite(id:String):Boolean?
 }

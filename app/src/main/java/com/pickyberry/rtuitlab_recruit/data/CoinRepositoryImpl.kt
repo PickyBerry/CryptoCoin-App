@@ -28,19 +28,16 @@ class CoinRepositoryImpl @Inject constructor(
         offlineFirst: Boolean,
     ): Flow<Resource<List<CoinItem>>> = flow {
 
-        emit(Resource.Loading(true))
+       // emit(Resource.Loading(true))
 
 
         val localData = db.coinItemDao.search(query)
         if (localData != null) emit(Resource.Success(data = localData.map { it.asCoinItem() }))
         if (!InternetValidation.hasInternetConnection(application)) emit(Resource.Error("No internet connection"))
         emit(Resource.Loading(false))
-        if (offlineFirst && query.isNotBlank() || !InternetValidation.hasInternetConnection(
-                application
-            )
-        )
-            return@flow
+        if (offlineFirst && query.isNotBlank() || !InternetValidation.hasInternetConnection(application)) return@flow
         else {
+
             val response = api.getAllCoins()
             val coins = if (response.isSuccessful) {
                 response.body()?.let { resultResponse ->
@@ -51,6 +48,7 @@ class CoinRepositoryImpl @Inject constructor(
 
                 val networkItems = networkData.map { it.asCoinItemEntity() }
                 val mergedData = if (localData != null) {
+
                     networkItems.map { networkItem ->
                         val localItem = localData.find { it.id == networkItem.id }
                         if (localItem != null) {
@@ -59,12 +57,14 @@ class CoinRepositoryImpl @Inject constructor(
                             networkItem.copy(isFavorite = false)
                         }
                     }
+
                 } else networkItems
 
                 db.coinItemDao.clearCoins()
                 db.coinItemDao.insertCoinItems(mergedData)
                 emit(Resource.Success(data = db.coinItemDao.search(query).map { it.asCoinItem() }))
                 emit(Resource.Loading(false))
+
             }
         }
     }
@@ -136,8 +136,15 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun toggleFavoriteState(id: String) {
+    override suspend fun toggleCoinFavoriteState(id: String) {
         db.coinItemDao.toggleCoinFavorite(id)
+    }
+
+    override suspend fun getFavorites(query: String): Flow<Resource<List<CoinItem>>> = flow{
+     //   emit(Resource.Loading(true))
+        val localData = db.coinItemDao.searchFavorites(query)
+        if (localData != null) emit(Resource.Success(data = localData.map { it.asCoinItem() }))
+        emit(Resource.Loading(false))
     }
 
     override suspend fun isCoinFavorite(id: String) = db.coinItemDao.isCoinFavorite(id)

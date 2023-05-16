@@ -1,6 +1,11 @@
 package com.pickyberry.rtuitlab_recruit.presentation
 
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import androidx.navigation.*
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
@@ -16,10 +21,8 @@ const val DestinationDetailsRoute = "$DestinationDetailsRoot/{$DestinationListAr
 
 @Composable
 fun CoinApp() {
-
-
-
     val navController = rememberNavController()
+
     NavHost(navController, startDestination = "list") {
         composable(route = DestinationListRoute) {
             CoinsListScreen(navController, onNavigate = { argument ->
@@ -30,6 +33,9 @@ fun CoinApp() {
             CoinDetailsScreen(navController)
         }
     }
+
+
+
 }
 
 public fun NavGraphBuilder.composable(

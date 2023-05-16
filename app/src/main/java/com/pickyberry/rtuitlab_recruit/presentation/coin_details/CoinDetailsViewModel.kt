@@ -1,6 +1,5 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -76,7 +75,7 @@ class CoinDetailsViewModel @Inject constructor(
 
     fun updateFavoriteStatus(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.toggleFavoriteState(id)
+            repository.toggleCoinFavoriteState(id)
             state = state.copy(isFavorite = repository.isCoinFavorite(id) ?: false)
         }
     }

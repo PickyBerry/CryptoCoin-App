@@ -62,7 +62,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation "androidx.fragment:fragment-ktx:1.3.6"
-    implementation "androidx.viewpager3:viewpager3:1.0.0"
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

@@ -37,16 +37,20 @@ class CoinsListViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500L)
-            getCoinsList()
+            if (state.displayingFavorites)
+                getFavoritesList()
+            else getCoinsList()
         }
     }
 
-   /* fun initiateQrScanner(context: Context){
-        val integrator = IntentIntegrator(context as Activity)
-        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
-        integrator.setPrompt("Scan a QR code")
-        integrator.initiateScan()
-    } */
+    fun toggleFavorites(toggle: Boolean){
+    //    if (toggle!=state.displayingFavorites) {
+            state = state.copy(displayingFavorites = toggle)
+            if (state.displayingFavorites)
+                getFavoritesList()
+            else getCoinsList()
+    //    }
+    }
 
 
     private fun getCoinsList(
@@ -73,4 +77,30 @@ class CoinsListViewModel @Inject constructor(
                 }
         }
     }
+
+
+    private fun getFavoritesList(
+        query: String = state.query.lowercase()
+    ) {
+        viewModelScope.launch {
+            repository
+                .getFavorites(query)
+                .collect { result ->
+                    when (result) {
+                        is Resource.Success -> {
+                            result.data?.let {
+                                state = state.copy(coins = it,error="")
+                            }
+                        }
+                        is Resource.Error -> {
+                            state=state.copy(error = result.message!!)
+                        }
+                        is Resource.Loading -> {
+                            state = state.copy(isLoading = result.isLoading)
+                        }
+                    }
+                }
+        }
+    }
+
 }

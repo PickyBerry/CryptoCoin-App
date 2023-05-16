@@ -6,5 +6,6 @@ data class CoinsListState(
     val coins: List<CoinItem> = emptyList(),
     val query:String="",
     val isLoading:Boolean = false,
-    val error: String =""
+    val error: String ="",
+    val displayingFavorites:Boolean = false
 )
