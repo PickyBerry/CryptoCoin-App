@@ -27,4 +27,7 @@ interface CoinItemDao {
         """
     )
     suspend fun search(query:String):List<CoinItemEntity>
+
+    @Query("UPDATE coin_item_entity SET isFavorite = :isFavorite WHERE id = :itemId")
+    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
 }

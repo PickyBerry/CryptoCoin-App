@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -55,10 +54,10 @@ fun CoinDetailsScreen(
                 },
                 actions = {
                     TextButton(
-                        onClick = { },
+                        onClick = { viewModel.updateCurrency() },
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
-                    ) { Text(text = "USD", fontSize = 16.sp) }
-                    IconButton(onClick = { }) { Icon(Icons.Filled.Star, "") }
+                    ) { Text(text = viewModel.state.currency, fontSize = 16.sp) }
+                    IconButton(onClick = { viewModel.updateFavoriteStatus(viewModel.state.coinDetails?.id ?: "",true) }) { Icon(Icons.Filled.Star, "") }
                     IconButton(onClick = { }) { Icon(Icons.Filled.Notifications, "") }
                 },
                 backgroundColor = MaterialTheme.colors.primary,
@@ -88,14 +87,14 @@ fun CoinDetailsScreen(
                     Spacer(modifier = Modifier.width(20.dp))
                     Column {
                         Text(
-                            text = (viewModel.state.coinDetails?.name
-                                ?: "") + ("  (" + viewModel.state.coinDetails?.symbol?.uppercase() + ")"),
+                            text = if (viewModel.state.coinDetails?.name != null && viewModel.state.coinDetails?.symbol != null) (viewModel.state.coinDetails?.name
+                                ?: "") + ("  (" + viewModel.state.coinDetails?.symbol?.uppercase() + ")") else "",
                             fontWeight = FontWeight.Bold,
                             fontSize = 22.sp,
                             color = MaterialTheme.colors.onPrimary,
                         )
                         Text(
-                            text = "$" + viewModel.state.coinDetails?.marketData?.currentPrice?.usd,
+                            text = if (viewModel.state.coinDetails?.marketData?.currentPrice?.usd != null) if (viewModel.state.currency=="USD") "$"+ viewModel.state.coinDetails?.marketData?.currentPrice?.usd else "₽ "+ viewModel.state.coinDetails?.marketData?.currentPrice?.rub else "",
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp,
                             color = MaterialTheme.colors.onBackground,
@@ -106,7 +105,7 @@ fun CoinDetailsScreen(
                 Spacer(modifier = Modifier.height(60.dp))
                 if (viewModel.state.historicalData.isNotEmpty()) {
                     HistoricalDataChart(
-                        data = viewModel.state.historicalData.map { it[0] to it[1] }.toList(),
+                        data = viewModel.state.historicalData,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(200.dp)
@@ -120,7 +119,7 @@ fun CoinDetailsScreen(
                     descriptions[0] else if (descriptions?.get(1)
                         ?.isNotEmpty() == true
                 ) descriptions[1] else ""
-                descriptions?.get(0)!!
+                if (descriptions != null) descriptions?.get(0)
 
                 if (viewModel.state.coinDetails?.description?.get(0)
                         ?.isNotEmpty() == true || viewModel.state.coinDetails?.description?.get(1)
@@ -128,7 +127,10 @@ fun CoinDetailsScreen(
                 ) DescriptionComposable(description.split('\n').first().replace(Regex("<.*?>"), ""))
 
                 Spacer(modifier = Modifier.height(10.dp))
-                MarketDataComposable(viewModel.state.coinDetails?.marketData!!, "usd")
+                if (viewModel.state.coinDetails?.marketData != null) MarketDataComposable(
+                    viewModel.state.coinDetails?.marketData!!,
+                    viewModel.state.currency
+                )
                 Spacer(modifier = Modifier.height(10.dp))
                 if (viewModel.state.coinDetails?.links?.isNotEmpty() == true) LinksComposable(
                     viewModel.state.coinDetails?.links!!

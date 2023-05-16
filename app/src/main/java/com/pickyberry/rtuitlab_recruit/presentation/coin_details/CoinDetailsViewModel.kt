@@ -49,7 +49,7 @@ class CoinDetailsViewModel @Inject constructor(
 
 
             repository
-                .getHistoricalData(coinId, "usd",false)
+                .getHistoricalData(coinId, state.currency,false)
                 .collect { result ->
                     when (result) {
                         is Resource.Success -> {
@@ -65,5 +65,13 @@ class CoinDetailsViewModel @Inject constructor(
                 }
 
         }
+    }
+
+    fun updateCurrency(){
+        state=state.copy(currency = if (state.currency=="USD") "RUB" else "USD")
+    }
+
+    fun updateFavoriteStatus(id: String, isFavorite: Boolean) {
+        viewModelScope.launch{ repository.updateFavoriteStatus(id, isFavorite) }
     }
 }

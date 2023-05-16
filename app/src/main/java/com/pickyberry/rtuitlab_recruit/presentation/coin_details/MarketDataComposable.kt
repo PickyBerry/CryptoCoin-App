@@ -41,21 +41,21 @@ fun MarketDataComposable(marketData: MarketData, currency: String) {
                 if (marketData.marketCap?.usd != null && marketData.marketCap.rub != null)
                     MarketDataItem(
                         "Market Cap",
-                        if (currency == "usd") marketData.marketCap.usd else marketData.marketCap.rub,
+                        if (currency == "USD") marketData.marketCap.usd else marketData.marketCap.rub,
                         currency
                     )
 
                 if (marketData.fullyDilutedValuation?.usd != null && marketData.fullyDilutedValuation.rub != null)
                     MarketDataItem(
                         "Fully Diluted Valuation",
-                        if (currency == "usd") marketData.fullyDilutedValuation.usd else marketData.fullyDilutedValuation.rub,
+                        if (currency == "USD") marketData.fullyDilutedValuation.usd else marketData.fullyDilutedValuation.rub,
                         currency
                     )
 
                 if (marketData.totalVolume?.usd != null && marketData.totalVolume.rub != null)
                     MarketDataItem(
                         "Total Volume",
-                        if (currency == "usd") marketData.totalVolume.usd else marketData.totalVolume.rub,
+                        if (currency == "USD") marketData.totalVolume.usd else marketData.totalVolume.rub,
                         currency
                     )
                 if (marketData.totalSupply != null)
@@ -94,7 +94,7 @@ fun MarketDataItem(name: String, value: Double, currency: String = "") {
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = (if (currency == "usd") "$" else if (currency == "rub") "₽" else "") + value.toLong().toString(),
+                text = (if (currency == "USD") "$" else if (currency == "RUB") "₽" else "") + value.toLong().toString(),
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End
             )

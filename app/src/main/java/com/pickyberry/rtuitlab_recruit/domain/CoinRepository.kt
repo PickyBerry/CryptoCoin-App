@@ -22,5 +22,7 @@ interface CoinRepository {
         id:String,
         currency:String,
         offlineFirst: Boolean
-    ):Flow<Resource<List<List<Float>>>>
+    ):Flow<Resource<List<Pair<Float,Float>>>>
+
+    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
 }

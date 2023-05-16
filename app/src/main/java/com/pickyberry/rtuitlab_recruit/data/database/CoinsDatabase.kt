@@ -21,8 +21,4 @@ abstract class CoinsDatabase : RoomDatabase() {
     abstract val coinItemDao: CoinItemDao
     abstract val coinDetailsDao: CoinDetailsDao
     abstract val historicalDataDao: HistoricalDataDao
-
-    @DeleteColumn(tableName="CoinItemEntity",columnName = "rank")
-    class CoinAutoMigration : AutoMigrationSpec
-
 }
