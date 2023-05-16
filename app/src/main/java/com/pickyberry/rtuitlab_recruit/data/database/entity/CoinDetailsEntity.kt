@@ -14,7 +14,7 @@ data class CoinDetailsEntity(
     val image: String,
     val currentPrice: List<Double?>,
     val marketCap: List<Double?>,
-    val fullyDilutedValuation: List<Double?>,
+    val fullyDilutedValuation: List<Double?>?,
     val totalVolume: List<Double?>,
     val totalSupply: Double?,
     val maxSupply: Double?,

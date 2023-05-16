@@ -9,6 +9,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,7 +59,7 @@ fun CoinDetailsScreen(
                         onClick = { viewModel.updateCurrency() },
                         colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
                     ) { Text(text = viewModel.state.currency, fontSize = 16.sp) }
-                    IconButton(onClick = { viewModel.updateFavoriteStatus(viewModel.state.coinDetails?.id ?: "",true) }) { Icon(Icons.Filled.Star, "") }
+                    IconButton(onClick = { viewModel.updateFavoriteStatus(viewModel.state.coinDetails?.id ?: "") }) { Icon(if (viewModel.state.isFavorite) Icons.Filled.Star else Icons.Filled.StarBorder, "") }
                     IconButton(onClick = { }) { Icon(Icons.Filled.Notifications, "") }
                 },
                 backgroundColor = MaterialTheme.colors.primary,

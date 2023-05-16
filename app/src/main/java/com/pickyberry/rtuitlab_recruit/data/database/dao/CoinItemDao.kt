@@ -28,6 +28,11 @@ interface CoinItemDao {
     )
     suspend fun search(query:String):List<CoinItemEntity>
 
-    @Query("UPDATE coin_item_entity SET isFavorite = :isFavorite WHERE id = :itemId")
-    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
+    @Query("UPDATE coin_item_entity SET isFavorite = NOT isFavorite WHERE id = :id")
+    fun toggleCoinFavorite(id: String)
+
+    @Query("SELECT isFavorite FROM coin_item_entity WHERE id = :id")
+    fun isCoinFavorite(id: String): Boolean?
+
+
 }

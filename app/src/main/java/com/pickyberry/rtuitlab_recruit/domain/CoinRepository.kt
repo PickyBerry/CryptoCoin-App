@@ -24,5 +24,7 @@ interface CoinRepository {
         offlineFirst: Boolean
     ):Flow<Resource<List<Pair<Float,Float>>>>
 
-    suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean)
+    suspend fun toggleFavoriteState(id: String)
+
+    suspend fun isCoinFavorite(id:String):Boolean?
 }

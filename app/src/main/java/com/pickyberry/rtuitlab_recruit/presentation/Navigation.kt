@@ -16,12 +16,15 @@ const val DestinationDetailsRoute = "$DestinationDetailsRoot/{$DestinationListAr
 
 @Composable
 fun CoinApp() {
+
+
+
     val navController = rememberNavController()
     NavHost(navController, startDestination = "list") {
         composable(route = DestinationListRoute) {
             CoinsListScreen(navController, onNavigate = { argument ->
                 navController.navigate("$DestinationDetailsRoot/$argument")
-            })
+            }, onQrCodeScanned = { qr -> navController.navigate("$DestinationDetailsRoot/${qr.split('-').last()}") })
         }
         composable(route = DestinationDetailsRoute) {
             CoinDetailsScreen(navController)

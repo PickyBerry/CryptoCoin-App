@@ -6,5 +6,6 @@ data class CoinDetailsState(
     val historicalData: List<Pair<Float,Float>> = listOf(),
     val coinDetails: CoinDetails? = null,
     val isLoading: Boolean = false,
-    val currency: String = "USD"
+    val currency: String = "USD",
+    val isFavorite: Boolean = false
 )

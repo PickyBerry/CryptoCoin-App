@@ -14,6 +14,6 @@ data class CoinItemEntity(
     @ColumnInfo(name = "currentPrice", defaultValue = "0") val currentPrice: Float,
     @ColumnInfo(name = "priceChangePercentage", defaultValue = "0") val priceChangePercentage: Float,
     @ColumnInfo(name = "marketCapChangePercentage", defaultValue = "0") val marketCapChangePercentage: Float,
-    val isFavorite:Boolean = false
+    @ColumnInfo(name = "isFavorite") val isFavorite:Boolean = false
 )
 

@@ -10,5 +10,6 @@ data class CoinItem(
     val image:String,
     val currentPrice: Float,
     val priceChangePercentage: Float,
-    val marketCapChangePercentage: Float
+    val marketCapChangePercentage: Float,
+    val isFavorite:Boolean
 )

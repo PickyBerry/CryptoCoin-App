@@ -136,8 +136,10 @@ class CoinRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateFavoriteStatus(id: String, isFavorite: Boolean) {
-        db.coinItemDao.updateFavoriteStatus(id, isFavorite)
+    override suspend fun toggleFavoriteState(id: String) {
+        db.coinItemDao.toggleCoinFavorite(id)
     }
+
+    override suspend fun isCoinFavorite(id: String) = db.coinItemDao.isCoinFavorite(id)
 
 }

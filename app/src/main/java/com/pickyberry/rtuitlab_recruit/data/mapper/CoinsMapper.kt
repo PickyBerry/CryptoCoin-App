@@ -12,7 +12,8 @@ fun CoinItemEntity.asCoinItem() =
         image = this.image,
         currentPrice = this.currentPrice,
         priceChangePercentage = this.priceChangePercentage,
-        marketCapChangePercentage = this.marketCapChangePercentage
+        marketCapChangePercentage = this.marketCapChangePercentage,
+        isFavorite=this.isFavorite
     )
 
 fun CoinItem.asCoinItemEntity() =
@@ -34,5 +35,6 @@ fun CoinDto.asCoinItem() =
         image = this.image,
         currentPrice = this.currentPrice,
         priceChangePercentage = this.priceChangePercentage,
-        marketCapChangePercentage = this.marketCapChangePercentage
+        marketCapChangePercentage = this.marketCapChangePercentage,
+        isFavorite = false
     )

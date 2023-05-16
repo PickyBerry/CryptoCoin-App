@@ -1,5 +1,7 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coins_list
 
+import android.app.Activity
+import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +11,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
+import androidx.compose.ui.platform.LocalContext
+import com.google.zxing.integration.android.IntentIntegrator
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -37,6 +40,13 @@ class CoinsListViewModel @Inject constructor(
             getCoinsList()
         }
     }
+
+   /* fun initiateQrScanner(context: Context){
+        val integrator = IntentIntegrator(context as Activity)
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+        integrator.setPrompt("Scan a QR code")
+        integrator.initiateScan()
+    } */
 
 
     private fun getCoinsList(

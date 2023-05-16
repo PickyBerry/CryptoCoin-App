@@ -1,5 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.data.database
 
+import android.util.Log
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -20,7 +21,11 @@ class RoomConverter {
 
     @TypeConverter
     fun fromDoubleList(value: String?): List<Double>? {
-        return value?.split(",")?.map { it.trim().toDouble() }
+        return if (value != null && !value.contains("null")) {
+            value.split(",").map { it.trim().toDouble() }
+        } else {
+            null
+        }
     }
 
     @TypeConverter

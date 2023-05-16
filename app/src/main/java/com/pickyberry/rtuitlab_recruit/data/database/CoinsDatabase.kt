@@ -1,9 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.data.database
 
 import androidx.room.*
-import androidx.room.migration.AutoMigrationSpec
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pickyberry.rtuitlab_recruit.data.database.dao.CoinDetailsDao
 import com.pickyberry.rtuitlab_recruit.data.database.dao.CoinItemDao
 import com.pickyberry.rtuitlab_recruit.data.database.dao.HistoricalDataDao
@@ -13,7 +10,7 @@ import com.pickyberry.rtuitlab_recruit.data.database.entity.HistoricalDataEntity
 
 @Database(
     entities = [CoinItemEntity::class,CoinDetailsEntity::class,HistoricalDataEntity::class],
-    version = 6,
+    version = 8,
     exportSchema = true
 )
 @TypeConverters(RoomConverter::class)

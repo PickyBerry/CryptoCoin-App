@@ -19,7 +19,7 @@ fun CoinDetailsEntity.asCoinDetails() =
         marketData = MarketData(
             Currencies(this.currentPrice[0], this.currentPrice[1]),
             Currencies(this.marketCap[0], this.marketCap[1]),
-            Currencies(this.fullyDilutedValuation[0], this.fullyDilutedValuation[1]),
+            Currencies(this.fullyDilutedValuation?.get(0), this.fullyDilutedValuation?.get(1)),
             Currencies(this.totalVolume[0], this.totalVolume[1]),
             this.totalSupply,
             this.maxSupply,
