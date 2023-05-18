@@ -93,7 +93,7 @@ fun CoinsListScreen(
             }
         ) {
             if (viewModel.state.isLoading) {
-                LinearProgressIndicator(modifier = Modifier.fillMaxSize())
+                CircularProgressIndicator(modifier = Modifier.fillMaxSize())
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()

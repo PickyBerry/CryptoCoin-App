@@ -23,6 +23,10 @@ const val DestinationDetailsRoute = "$DestinationDetailsRoot/{$DestinationListAr
 fun CoinApp() {
     val navController = rememberNavController()
 
+
+
+
+
     NavHost(navController, startDestination = "list") {
         composable(route = DestinationListRoute) {
             CoinsListScreen(navController, onNavigate = { argument ->

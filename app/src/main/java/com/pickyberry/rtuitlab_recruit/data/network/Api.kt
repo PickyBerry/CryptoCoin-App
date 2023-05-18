@@ -12,10 +12,16 @@ interface Api {
     suspend fun getAllCoins(): Response<List<CoinDto>>
 
     @GET("coins/{id}/market_chart?days=91/")
-    suspend fun getHistoricalData(@Path("id")id:String,@Query("vs_currency")currency:String):Response<HistoricalDataDto>
+    suspend fun getHistoricalData(
+        @Path("id") id: String,
+        @Query("vs_currency") currency: String,
+    ): Response<HistoricalDataDto>
 
     @GET("coins/{id}?tickers=false&community_data=false&developer_data=false&sparkline=false/")
-    suspend fun getCoinDetails(@Path("id")id:String):Response<CoinDetailsDto>
+    suspend fun getCoinDetails(@Path("id") id: String): Response<CoinDetailsDto>
+
+    @GET("simple/price?include_24hr_change=true&precision=1")
+    suspend fun getSimplePrice(@Query("ids") id: String,@Query("vs_currencies") currency: String): Response<SimpleCoinPriceDto>
 
     companion object {
         const val BASE_URL = "https://api.coingecko.com/api/v3/"

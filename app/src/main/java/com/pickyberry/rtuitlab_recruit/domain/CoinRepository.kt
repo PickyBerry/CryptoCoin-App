@@ -2,6 +2,7 @@ package com.pickyberry.rtuitlab_recruit.domain
 
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinDetails
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
+import com.pickyberry.rtuitlab_recruit.domain.model.SimpleCoinPriceItem
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import kotlinx.coroutines.flow.Flow
 
@@ -27,4 +28,6 @@ interface CoinRepository {
     suspend fun getFavorites(query: String): Flow<Resource<List<CoinItem>>>
 
     suspend fun isCoinFavorite(id:String):Boolean?
+
+    suspend fun getSimpleCoinPrice(id:String,currency:String): SimpleCoinPriceItem?
 }

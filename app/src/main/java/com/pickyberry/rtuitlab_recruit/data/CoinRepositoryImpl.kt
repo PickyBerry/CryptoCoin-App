@@ -1,14 +1,17 @@
 package com.pickyberry.rtuitlab_recruit.data
 
 import android.app.Application
+import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.database.entity.HistoricalDataEntity
 import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetails
 import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetailsEntity
+import com.pickyberry.rtuitlab_recruit.data.mapper.asSimpleCoinPriceItem
 import com.pickyberry.rtuitlab_recruit.data.network.Api
 import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinDetails
 import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
+import com.pickyberry.rtuitlab_recruit.domain.model.SimpleCoinPriceItem
 import com.pickyberry.rtuitlab_recruit.util.InternetValidation
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import kotlinx.coroutines.flow.Flow
@@ -28,7 +31,7 @@ class CoinRepositoryImpl @Inject constructor(
         offlineFirst: Boolean,
     ): Flow<Resource<List<CoinItem>>> = flow {
 
-       // emit(Resource.Loading(true))
+        emit(Resource.Loading(true))
 
 
         val localData = db.coinItemDao.search(query)
@@ -148,5 +151,19 @@ class CoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isCoinFavorite(id: String) = db.coinItemDao.isCoinFavorite(id)
+    override suspend fun getSimpleCoinPrice(
+        id: String,
+        currency: String,
+    ): SimpleCoinPriceItem? {
+        if (InternetValidation.hasInternetConnection(application)){
+            val response = api.getSimplePrice(id,currency)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    return it.asSimpleCoinPriceItem()
+                }
+            }
+        }
+        return null
+    }
 
 }

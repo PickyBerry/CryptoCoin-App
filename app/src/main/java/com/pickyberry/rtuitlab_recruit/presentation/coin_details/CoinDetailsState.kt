@@ -7,5 +7,6 @@ data class CoinDetailsState(
     val coinDetails: CoinDetails? = null,
     val isLoading: Boolean = false,
     val currency: String = "USD",
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val permissionGranted: Boolean = false
 )
