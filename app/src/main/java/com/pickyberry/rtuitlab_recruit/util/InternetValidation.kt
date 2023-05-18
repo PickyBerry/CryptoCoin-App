@@ -6,8 +6,8 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
 object InternetValidation {
-    fun hasInternetConnection(application: Application): Boolean {
-        val connectivityManager = application.getSystemService(
+    fun hasInternetConnection(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(
             Context.CONNECTIVITY_SERVICE
         ) as ConnectivityManager
         val activeNetwork = connectivityManager.activeNetwork ?: return false

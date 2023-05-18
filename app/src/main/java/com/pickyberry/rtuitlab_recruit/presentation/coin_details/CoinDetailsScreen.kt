@@ -60,7 +60,7 @@ fun CoinDetailsScreen(
     } else {
 
         val notificationEnabled = remember {
-            Log.e("lol", viewModel.state.coinDetails?.id ?: "null")
+
             mutableStateOf(
                 sharedPreferences.getBoolean(
                     "${viewModel.state.coinDetails?.id}.enabled",
@@ -109,28 +109,36 @@ fun CoinDetailsScreen(
                                     )
                                     .apply()
                                 notificationEnabled.value = false
+                                cancelNotificationForCoin(context, viewModel.state.coinDetails!!.id)
                             } else {
                                 if (viewModel.state.permissionGranted) {
 
                                     val timeSetListener =
                                         TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                                            Log.e("lol", "wow")
 
-                                            sharedPreferences.edit()
-                                                .putBoolean(
-                                                    "${viewModel.state.coinDetails?.id}.enabled",
-                                                    true
-                                                )
-                                                .apply()
+                                            sharedPreferences.edit().putBoolean(
+                                                "${viewModel.state.coinDetails?.id}.enabled",
+                                                true
+                                            ).apply()
+
+                                            sharedPreferences.edit().putInt(
+                                                "${viewModel.state.coinDetails?.id}.hour",
+                                                hourOfDay
+                                            ).apply()
+                                            sharedPreferences.edit().putInt(
+                                                "${viewModel.state.coinDetails?.id}.minute",
+                                                minute
+                                            ).apply()
+                                            sharedPreferences.edit().putString(
+                                                "${viewModel.state.coinDetails?.id}.name",
+                                                viewModel.state.coinDetails?.name
+                                            ).apply()
                                             notificationEnabled.value = true
 
-                                            timePickerState.value.set(
-                                                Calendar.HOUR_OF_DAY,
-                                                hourOfDay
+                                            scheduleNotificationForCoin(
+                                                context,
+                                                viewModel.state.coinDetails!!.id
                                             )
-                                            timePickerState.value.set(Calendar.MINUTE, minute)
-                                            val calendar = timePickerState.value
-                                            scheduleDailyNotification(context, calendar, 0)
 
                                         }
 
@@ -143,7 +151,8 @@ fun CoinDetailsScreen(
                                         true
                                     ).show()
 
-                                } else Toast.makeText(context,"No permission!",Toast.LENGTH_SHORT).show()
+                                } else Toast.makeText(context, "No permission!", Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }) {
                             Icon(
@@ -254,38 +263,7 @@ fun CoinDetailsScreen(
         }
     }
 }
-/*
-fun scheduleDailyNotification(context: Context, calendar: Calendar, alarmId: Int) {
-    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-    val intent = Intent(context, DailyNotificationReceiver::class.java).apply {
-        action = "NOTIFICATION_ACTION"
-    }
-    val pendingIntent = PendingIntent.getBroadcast(
-        context,
-        alarmId,
-        intent,
-        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-    )
 
-
-    calendar.set(Calendar.SECOND, 0)
-    calendar.set(Calendar.MILLISECOND, 0)
-    calendar.timeZone = TimeZone.getDefault()
-
-
-    if (calendar.timeInMillis < System.currentTimeMillis()) {
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
-    }
-    val selectedTime = calendar.timeInMillis
-
-
-    alarmManager.setRepeating(
-        AlarmManager.RTC_WAKEUP,
-        selectedTime,
-        AlarmManager.INTERVAL_DAY,
-        pendingIntent
-    )
-} */
 
 fun scheduleNotificationForCoin(context: Context, coinId: String) {
     val sharedPreferences = context.getSharedPreferences("notification_prefs", Context.MODE_PRIVATE)
@@ -300,12 +278,17 @@ fun scheduleNotificationForCoin(context: Context, coinId: String) {
         val intent = Intent(context, DailyNotificationReceiver::class.java)
         intent.action = "NOTIFICATION_ACTION"
         intent.putExtra("coinId", coinId)
-        val pendingIntent = PendingIntent.getBroadcast(context, coinId.hashCode(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent = PendingIntent.getBroadcast(
+            context,
+            coinId.hashCode(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
+
+        alarmManager.setExact(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
             pendingIntent
         )
     }
@@ -314,7 +297,12 @@ fun scheduleNotificationForCoin(context: Context, coinId: String) {
 fun cancelNotificationForCoin(context: Context, coinId: String) {
     val intent = Intent(context, DailyNotificationReceiver::class.java)
     intent.action = "NOTIFICATION_ACTION"
-    val pendingIntent = PendingIntent.getBroadcast(context, coinId.hashCode(), intent, PendingIntent.FLAG_NO_CREATE)
+    val pendingIntent = PendingIntent.getBroadcast(
+        context,
+        coinId.hashCode(),
+        intent,
+        PendingIntent.FLAG_NO_CREATE or PendingIntent.FLAG_IMMUTABLE
+    )
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     pendingIntent?.let {
         alarmManager.cancel(it)
