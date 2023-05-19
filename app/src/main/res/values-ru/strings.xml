@@ -20,6 +20,7 @@
     <string name="total_supply">Общий запас</string>
     <string name="max_supply">Максимальный запас</string>
     <string name="circulating_supply">Запас в обороте</string>
+    <string name="sort">Фильтр: </string>
     <string-array name="months">
         <item>Январь</item>
         <item>Февраль</item>

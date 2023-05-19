@@ -7,9 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.pickyberry.rtuitlab_recruit.domain.model.CoinItem
 import com.pickyberry.rtuitlab_recruit.util.Resource
+import com.pickyberry.rtuitlab_recruit.util.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -100,6 +103,21 @@ class CoinsListViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    fun sort(sortType: SortType){
+        val sortedCoins = when (sortType){
+            SortType.NAMES_ASC -> state.coins.sortedWith(CoinItem.sortNamesAscending())
+            SortType.NAMES_DESC -> state.coins.sortedWith(CoinItem.sortNamesDescending())
+            SortType.PRICE_ASC -> state.coins.sortedWith(CoinItem.sortPricesAscending())
+            SortType.PRICE_DESC -> state.coins.sortedWith(CoinItem.sortPricesDescending())
+            SortType.PRICE_CHANGE_ASC -> state.coins.sortedWith(CoinItem.sortPriceChangeAscending())
+            SortType.PRICE_CHANGE_DESC -> state.coins.sortedWith(CoinItem.sortPriceChangeDescending())
+            SortType.MARKET_CHANGE_ASC -> state.coins.sortedWith(CoinItem.sortMarketCapChangeAscending())
+            SortType.MARKET_CHANGE_DESC -> state.coins.sortedWith(CoinItem.sortMarketCapChangeDescending())
+            SortType.DEFAULT -> state.coins
+        }
+        state=state.copy(coins=sortedCoins, sorted = sortType)
     }
 
 }

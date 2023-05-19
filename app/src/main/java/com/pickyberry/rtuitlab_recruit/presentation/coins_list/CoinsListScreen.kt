@@ -24,12 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.zxing.integration.android.IntentIntegrator
 import com.pickyberry.rtuitlab_recruit.R
 import com.pickyberry.rtuitlab_recruit.presentation.ScannerCaptureActivity
+import com.pickyberry.rtuitlab_recruit.util.SortType
 
 
 @Composable
@@ -57,7 +57,10 @@ fun CoinsListScreen(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)
     )
     {
-        Row(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.background), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.background),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
 
             //Search query input
             OutlinedTextField(
@@ -79,7 +82,7 @@ fun CoinsListScreen(
                     IntentIntegrator(context as Activity).setCaptureActivity(ScannerCaptureActivity::class.java)
                         .createScanIntent()
                 )
-            }, modifier = Modifier.padding(end=5.dp, top = 16.dp,bottom=16.dp)) {
+            }, modifier = Modifier.padding(end = 5.dp, top = 16.dp, bottom = 16.dp)) {
                 Icon(
                     imageVector = Icons.Filled.QrCodeScanner,
                     contentDescription = "",
@@ -99,81 +102,121 @@ fun CoinsListScreen(
         ) {
 
 
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
 
-                    //Toggle between all and favorite coins
-                    item {
-                        val selectedTabIndex = remember { mutableStateOf(if (viewModel.state.displayingFavorites) 1 else 0) }
-                        TabRow(
-                            selectedTabIndex = selectedTabIndex.value,
-                            backgroundColor = MaterialTheme.colors.background
-                        ) {
-                            Tab(
-                                selected = selectedTabIndex.value == 0,
-                                onClick = { viewModel.toggleFavorites(false)
-                                    selectedTabIndex.value=0 },
-                                text = { Text(stringResource(R.string.all_coins)) }
-                            )
-                            Tab(
-                                selected = selectedTabIndex.value == 1,
-                                onClick = { viewModel.toggleFavorites(true)
-                                    selectedTabIndex.value=1},
-                                text = { Text(stringResource(R.string.favorite_coins)) }
-                            )
-                        }
+                //Toggle between all and favorite coins
+                item {
+                    val selectedTabIndex =
+                        remember { mutableStateOf(if (viewModel.state.displayingFavorites) 1 else 0) }
+                    TabRow(
+                        selectedTabIndex = selectedTabIndex.value,
+                        backgroundColor = MaterialTheme.colors.background
+                    ) {
+                        Tab(
+                            selected = selectedTabIndex.value == 0,
+                            onClick = {
+                                viewModel.toggleFavorites(false)
+                                selectedTabIndex.value = 0
+                            },
+                            text = { Text(stringResource(R.string.all_coins)) }
+                        )
+                        Tab(
+                            selected = selectedTabIndex.value == 1,
+                            onClick = {
+                                viewModel.toggleFavorites(true)
+                                selectedTabIndex.value = 1
+                            },
+                            text = { Text(stringResource(R.string.favorite_coins)) }
+                        )
                     }
+                }
 
 
+                //Header for list
+                item {
 
-                    //Header for list
-                    item {
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(MaterialTheme.colors.primary),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Spacer(modifier = Modifier.width(80.dp))
-                            Text(
-                                text = stringResource(R.string.coin),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 10.sp,
-                                color = Color.White,
-                                modifier = Modifier.weight(2f)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = stringResource(R.string.price),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 10.sp,
-                                color = Color.White,
-                                modifier = Modifier.weight(2f)
-                            )
-                            Text(
-                                text = stringResource(R.string.hour_24),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 10.sp,
-                                maxLines = 2,
-                                color = Color.White,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = stringResource(R.string.hour_24_market_cap),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 10.sp,
-                                maxLines = 2,
-                                color = Color.White,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Spacer(modifier = Modifier.width(10.dp))
-                        }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colors.primary),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Text(
+                            text = stringResource(R.string.sort),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp,
+                            color = Color.White,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = (if (viewModel.state.sorted == SortType.NAMES_ASC) "▲"
+                            else if (viewModel.state.sorted == SortType.NAMES_DESC) "▼" else "")
+                                    + stringResource(R.string.coin),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp,
+                            color = Color.White,
+                            modifier = Modifier.weight(2f).clickable {
+                                if (viewModel.state.sorted != SortType.NAMES_ASC) viewModel.sort(
+                                    SortType.NAMES_ASC
+                                )
+                                else viewModel.sort(SortType.NAMES_DESC)
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = (if (viewModel.state.sorted == SortType.PRICE_ASC) "▲"
+                            else if (viewModel.state.sorted == SortType.PRICE_DESC) "▼" else "")
+                                    +stringResource(R.string.price),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp,
+                            color = Color.White,
+                            modifier = Modifier.weight(2f).clickable {
+                                if (viewModel.state.sorted != SortType.PRICE_ASC) viewModel.sort(
+                                    SortType.PRICE_ASC
+                                )
+                                else viewModel.sort(SortType.PRICE_DESC)
+                            }
+                        )
+                        Text(
+                            text = (if (viewModel.state.sorted == SortType.PRICE_CHANGE_ASC) "▲"
+                            else if (viewModel.state.sorted == SortType.PRICE_CHANGE_DESC) "▼" else "")
+                                    +stringResource(R.string.hour_24),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp,
+                            maxLines = 2,
+                            color = Color.White,
+                            modifier = Modifier.weight(1f).clickable {
+                                if (viewModel.state.sorted != SortType.PRICE_CHANGE_ASC) viewModel.sort(
+                                    SortType.PRICE_CHANGE_ASC
+                                )
+                                else viewModel.sort(SortType.PRICE_CHANGE_DESC)
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Text(
+                            text = (if (viewModel.state.sorted == SortType.MARKET_CHANGE_ASC) "▲"
+                            else if (viewModel.state.sorted == SortType.MARKET_CHANGE_DESC) "▼" else "")
+                                    +stringResource(R.string.hour_24_market_cap),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 11.sp,
+                            maxLines = 2,
+                            color = Color.White,
+                            modifier = Modifier.weight(1f).clickable {
+                                if (viewModel.state.sorted != SortType.MARKET_CHANGE_ASC) viewModel.sort(
+                                    SortType.MARKET_CHANGE_ASC
+                                )
+                                else viewModel.sort(SortType.MARKET_CHANGE_DESC)
+                            }
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
                     }
+                }
 
-                    if (!viewModel.state.isLoading) {
+                if (!viewModel.state.isLoading) {
                     //Main Coin list
                     items(viewModel.state.coins.size) { i ->
                         val coinItem = viewModel.state.coins[i]

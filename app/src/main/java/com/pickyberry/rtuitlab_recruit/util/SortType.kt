@@ -1,0 +1,5 @@
+package com.pickyberry.rtuitlab_recruit.util
+
+enum class SortType {
+    DEFAULT,NAMES_ASC,NAMES_DESC,PRICE_ASC,PRICE_DESC,PRICE_CHANGE_ASC,PRICE_CHANGE_DESC,MARKET_CHANGE_ASC,MARKET_CHANGE_DESC
+}
