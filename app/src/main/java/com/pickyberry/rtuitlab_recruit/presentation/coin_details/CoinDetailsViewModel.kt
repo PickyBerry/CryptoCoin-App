@@ -1,14 +1,8 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +10,10 @@ import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,54 +25,53 @@ class CoinDetailsViewModel @Inject constructor(
     var state by mutableStateOf(CoinDetailsState())
 
     init {
-        getDetailsAndHistoricalData()
+        getDetailsAndHistoricalData("USD")
     }
 
-    private fun getDetailsAndHistoricalData() {
+    //Get details and historical data simultaneously and return after all the data is received
+    private fun getDetailsAndHistoricalData(currency: String) {
         state = state.copy(isLoading = true)
         viewModelScope.launch(Dispatchers.IO) {
             val coinId = savedStateHandle.get<String>("id") ?: return@launch
 
+            val coinDetailsFlow = repository.getCoinDetails(coinId, false)
+            val historicalDataFlow = repository.getHistoricalData(coinId, currency, false)
 
-            repository
-                .getCoinDetails(coinId, false)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            result.data?.let {
-                                val isFavorite = repository.isCoinFavorite(it.id)
-                               withContext(Dispatchers.Main){ state = state.copy(coinDetails = it, isFavorite = isFavorite ?: false)}
-                            }
-                        }
-                        is Resource.Error -> Unit
-                        is Resource.Loading -> {
-                            withContext(Dispatchers.Main){ state = state.copy(isLoading = result.isLoading)}
-                        }
+            coinDetailsFlow.zip(historicalDataFlow) { coinDetailsResult, historicalDataResult ->
+                if (coinDetailsResult is Resource.Success && coinDetailsResult.data != null) {
+                    val isFavorite = repository.isCoinFavorite(coinDetailsResult.data.id)
+                    withContext(Dispatchers.Main) {
+                        state = state.copy(
+                            coinDetails = coinDetailsResult.data,
+                            isFavorite = isFavorite ?: false,
+                            error = ""
+                        )
+                    }
+                }
+                if (historicalDataResult is Resource.Success && historicalDataResult.data != null) {
+                    withContext(Dispatchers.Main) {
+                        state = state.copy(historicalData = historicalDataResult.data, error = "")
                     }
                 }
 
+                if (coinDetailsResult is Resource.Error) state =
+                    state.copy(error = coinDetailsResult.message!!)
+                if (historicalDataResult is Resource.Error) state =
+                    state.copy(error = historicalDataResult.message!!)
+            }.collect()
 
-            repository
-                .getHistoricalData(coinId, state.currency, false)
-                .collect { result ->
-                    when (result) {
-                        is Resource.Success -> {
-                            result.data?.let {
-                                withContext(Dispatchers.Main){  state = state.copy(historicalData = it) }
-                            }
-                        }
-                        is Resource.Error -> Unit
-                        is Resource.Loading -> {
-                            withContext(Dispatchers.Main){    state = state.copy(isLoading = result.isLoading) }
-                        }
-                    }
-                }
+            withContext(Dispatchers.Main) {
+                state = state.copy(isLoading = false)
+            }
 
         }
     }
 
+    fun refresh() = getDetailsAndHistoricalData(state.currency)
+
     fun updateCurrency() {
         state = state.copy(currency = if (state.currency == "USD") "RUB" else "USD")
+        getDetailsAndHistoricalData(state.currency)
     }
 
     fun updateFavoriteStatus(id: String) {
@@ -86,7 +80,6 @@ class CoinDetailsViewModel @Inject constructor(
             state = state.copy(isFavorite = repository.isCoinFavorite(id) ?: false)
         }
     }
-
 
 
 }

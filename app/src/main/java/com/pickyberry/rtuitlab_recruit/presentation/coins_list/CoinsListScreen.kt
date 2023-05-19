@@ -32,14 +32,11 @@ import com.pickyberry.rtuitlab_recruit.presentation.ScannerCaptureActivity
 
 @Composable
 fun CoinsListScreen(
-    navController: NavController,
     onNavigate: (String) -> Unit,
     onQrCodeScanned: (String) -> Unit,
     viewModel: CoinsListViewModel = hiltViewModel(),
 ) {
-    val swipeRefreshState = rememberSwipeRefreshState(
-        isRefreshing = viewModel.state.isLoading
-    )
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isLoading)
     val context = LocalContext.current
 
     val qrScanLauncher = rememberLauncherForActivityResult(
@@ -58,33 +55,39 @@ fun CoinsListScreen(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.primary)
     )
     {
-        Row(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.primary)) {
+        Row(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.primary), verticalAlignment = Alignment.CenterVertically) {
+
+            //Search query input
             OutlinedTextField(
                 value = viewModel.state.query,
                 onValueChange = {
                     viewModel.search(it)
                 },
-                modifier = Modifier
-                    .padding(16.dp),
                 placeholder = {
                     Text(text = "Search...")
                 },
+                modifier = Modifier.padding(16.dp).weight(1f),
                 maxLines = 1,
                 singleLine = true
             )
+
+            //QR-Scanner launcher
             IconButton(onClick = {
                 qrScanLauncher.launch(
                     IntentIntegrator(context as Activity).setCaptureActivity(ScannerCaptureActivity::class.java)
                         .createScanIntent()
                 )
-            }, modifier = Modifier.weight(1f).size(48.dp)) {
+            }, modifier = Modifier.padding(end=5.dp, top = 16.dp,bottom=16.dp)) {
                 Icon(
-                    Icons.Filled.QrCodeScanner,
-                    "",
-                    tint = MaterialTheme.colors.onPrimary
+                    imageVector = Icons.Filled.QrCodeScanner,
+                    contentDescription = "",
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.size(48.dp)
                 )
             }
+
         }
+
         SwipeRefresh(
             state = swipeRefreshState,
             onRefresh = {
@@ -92,14 +95,13 @@ fun CoinsListScreen(
                 viewModel.refresh()
             }
         ) {
-            if (viewModel.state.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.fillMaxSize())
-            } else {
+
+
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
 
-
+                    //Toggle between all and favorite coins
                     item {
                         val selectedTabIndex = remember { mutableStateOf(if (viewModel.state.displayingFavorites) 1 else 0) }
                         TabRow(
@@ -123,7 +125,7 @@ fun CoinsListScreen(
 
 
 
-
+                    //Header for list
                     item {
 
                         Row(
@@ -169,6 +171,8 @@ fun CoinsListScreen(
                         }
                     }
 
+                    if (!viewModel.state.isLoading) {
+                    //Main Coin list
                     items(viewModel.state.coins.size) { i ->
                         val coinItem = viewModel.state.coins[i]
                         CoinItemComposable(
@@ -176,10 +180,10 @@ fun CoinsListScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
-                                    viewModel.toggleFavorites(false)
                                     onNavigate(coinItem.id)
+                                    viewModel.toggleFavorites(false)
                                 }
-                                .padding(16.dp)
+                                .padding(16.dp),
                         )
                         if (i < viewModel.state.coins.size) {
                             Divider(

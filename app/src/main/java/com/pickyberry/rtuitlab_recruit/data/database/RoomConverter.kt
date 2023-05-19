@@ -1,10 +1,11 @@
 package com.pickyberry.rtuitlab_recruit.data.database
 
-import android.util.Log
+
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+//Converter class for keeping lists and maps in our database
 class RoomConverter {
 
     private val gson = Gson()

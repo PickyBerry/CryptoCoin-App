@@ -144,10 +144,8 @@ class CoinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFavorites(query: String): Flow<Resource<List<CoinItem>>> = flow{
-     //   emit(Resource.Loading(true))
         val localData = db.coinItemDao.searchFavorites(query)
-        if (localData != null) emit(Resource.Success(data = localData.map { it.asCoinItem() }))
-        emit(Resource.Loading(false))
+        emit(Resource.Success(data = localData.map { it.asCoinItem() }))
     }
 
     override suspend fun isCoinFavorite(id: String) = db.coinItemDao.isCoinFavorite(id)

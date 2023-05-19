@@ -1,7 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coins_list
 
-import android.app.Activity
-import android.content.Context
+
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +10,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
-import com.google.zxing.integration.android.IntentIntegrator
 import com.pickyberry.rtuitlab_recruit.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -44,12 +41,10 @@ class CoinsListViewModel @Inject constructor(
     }
 
     fun toggleFavorites(toggle: Boolean){
-    //    if (toggle!=state.displayingFavorites) {
             state = state.copy(displayingFavorites = toggle)
             if (state.displayingFavorites)
                 getFavoritesList()
             else getCoinsList()
-    //    }
     }
 
 

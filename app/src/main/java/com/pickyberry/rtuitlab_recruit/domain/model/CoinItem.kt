@@ -1,7 +1,5 @@
 package com.pickyberry.rtuitlab_recruit.domain.model
 
-import com.google.gson.annotations.SerializedName
-
 
 data class CoinItem(
     val id:String,

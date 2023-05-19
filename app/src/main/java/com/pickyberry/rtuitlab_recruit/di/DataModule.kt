@@ -16,6 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import javax.inject.Singleton
 
+//Hilt database and network dependencies
 @Module
 @InstallIn(SingletonComponent::class)
 class DataModule {

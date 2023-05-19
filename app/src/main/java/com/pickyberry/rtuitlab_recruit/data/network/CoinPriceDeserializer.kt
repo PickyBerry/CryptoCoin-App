@@ -6,6 +6,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
 import java.lang.reflect.Type
 
+//Deserualizer for price data coming for our notification (It has uncommon json format)
 class CoinPriceDeserializer : JsonDeserializer<SimpleCoinPriceDto> {
     override fun deserialize(
         json: JsonElement?,

@@ -8,9 +8,7 @@ data class SimpleCoinPriceDto(
 
 data class CoinPrice(
     @SerializedName("usd") val usd: Double?,
-    @SerializedName("usd_24h_change")
-    val usd24hChange: Double?,
+    @SerializedName("usd_24h_change") val usd24hChange: Double?,
     @SerializedName("rub") val rub: Double?,
-    @SerializedName("rub_24h_change")
-    val rub24hChange: Double?,
+    @SerializedName("rub_24h_change") val rub24hChange: Double?,
 )

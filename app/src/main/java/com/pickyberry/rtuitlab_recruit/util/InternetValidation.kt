@@ -1,10 +1,11 @@
 package com.pickyberry.rtuitlab_recruit.util
 
-import android.app.Application
+
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 
+//Object for checking is user currently has stable internet connection
 object InternetValidation {
     fun hasInternetConnection(context: Context): Boolean {
         val connectivityManager = context.getSystemService(

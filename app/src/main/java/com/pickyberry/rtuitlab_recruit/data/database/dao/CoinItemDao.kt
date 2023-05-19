@@ -23,7 +23,7 @@ interface CoinItemDao {
             SELECT *
             FROM coin_item_entity
             WHERE LOWER(name) LIKE '%' || LOWER(:query) || '%' OR
-            UPPER(:query) == symbol
+            symbol LIKE '%' || UPPER(:query) || '%'
         """
     )
     suspend fun search(query:String):List<CoinItemEntity>

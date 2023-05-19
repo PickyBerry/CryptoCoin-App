@@ -1,6 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.util
 
-import androidx.compose.material.lightColors
+
 import androidx.compose.ui.graphics.Color
 
 val BackgroundWhite = Color(0xFFF5EDED)

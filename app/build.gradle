@@ -84,13 +84,6 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.7.1'
     implementation("androidx.navigation:navigation-compose:2.6.0-beta01")
 
-
-    //Chart
-    implementation "com.patrykandpatrick.vico:core:1.6.5"
-    implementation "com.patrykandpatrick.vico:compose:1.6.5"
-    implementation "com.patrykandpatrick.vico:compose-m3:1.6.5"
-    implementation("com.himanshoe:charty:1.0.1")
-
     //Hilt
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     implementation "com.google.dagger:hilt-android:2.43.2"
@@ -104,6 +97,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.15.1'
     implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
     implementation "io.coil-kt:coil-compose:2.0.0-rc01"
+
 
     //QR
     implementation 'com.google.zxing:core:3.4.1'

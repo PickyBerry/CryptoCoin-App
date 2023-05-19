@@ -12,10 +12,7 @@ interface CoinDetailsDao {
         coinDetailsEntity: CoinDetailsEntity
     )
 
-    @Update
-    suspend fun updateCoinDetails(coinDetailsEntity: CoinDetailsEntity)
-
-    @Query("SELECT * FROM coin_details_entity WHERE :id == id")
+    @Query("SELECT * FROM coin_details_entity WHERE :id == id OR :id==symbol")
     suspend fun getCoinDetails(id:String): CoinDetailsEntity
 
 }
