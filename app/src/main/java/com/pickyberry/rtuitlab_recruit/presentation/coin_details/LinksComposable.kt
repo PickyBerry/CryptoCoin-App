@@ -15,9 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import com.pickyberry.rtuitlab_recruit.R
 
 @Composable
 fun LinksComposable(links: Map<String, String>,context: Context) {
@@ -26,9 +28,9 @@ fun LinksComposable(links: Map<String, String>,context: Context) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.background,
             shape = RoundedCornerShape(6.dp),
-            border = BorderStroke(2.dp, MaterialTheme.colors.onBackground),
+            border = BorderStroke(2.dp, MaterialTheme.colors.primary),
             modifier = Modifier.fillMaxWidth().padding(start = 10.dp, end = 10.dp),
         ) {
             Column {
@@ -39,7 +41,7 @@ fun LinksComposable(links: Map<String, String>,context: Context) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Home page",
+                            text = stringResource(R.string.home_page),
                             modifier = Modifier.weight(1f)
                         )
                         Text(
@@ -59,7 +61,7 @@ fun LinksComposable(links: Map<String, String>,context: Context) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Blockchain site",
+                            text = stringResource(R.string.blockchain_site),
                             modifier = Modifier.weight(1f)
                         )
                         Text(

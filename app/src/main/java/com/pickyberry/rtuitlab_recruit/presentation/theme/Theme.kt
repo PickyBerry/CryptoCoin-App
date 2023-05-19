@@ -11,17 +11,17 @@ import com.pickyberry.rtuitlab_recruit.presentation.theme.AppShapes
 
 
 private val DarkColorPalette = darkColors(
-    primary = BackgroundBlue,
+    primary = LightBlue,
     secondary = AccentYellow,
-    onPrimary = AlmostWhite,
-    onBackground = LightBlue
+    onBackground = AlmostWhite,
+    background = BackgroundBlue
 )
 
 private val LightColorPalette = lightColors(
-    primary = BackgroundWhite,
+    primary = Brown,
     secondary = AccentRed,
-    onPrimary = Color.Black,
-    onBackground = Brown
+    onBackground = Color.Black,
+    background = BackgroundWhite
 )
 
 

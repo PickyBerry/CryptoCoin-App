@@ -15,15 +15,15 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun DescriptionComposable(text:String) {
     Surface(
-        color = MaterialTheme.colors.primary,
+        color = MaterialTheme.colors.background,
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(3.dp, MaterialTheme.colors.onBackground),
+        border = BorderStroke(3.dp, MaterialTheme.colors.primary),
         modifier = Modifier.padding(start = 10.dp, end = 10.dp)
     ) {
         Text(
             text = text,
             modifier = Modifier.padding(10.dp).fillMaxWidth(),
-            color = MaterialTheme.colors.onPrimary,
+            color = MaterialTheme.colors.onBackground,
             fontSize = 14.sp,
             softWrap = true
         )

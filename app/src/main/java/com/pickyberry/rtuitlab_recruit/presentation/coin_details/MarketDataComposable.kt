@@ -10,8 +10,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.pickyberry.rtuitlab_recruit.R
 import com.pickyberry.rtuitlab_recruit.domain.model.MarketData
 
 @Composable
@@ -21,9 +23,9 @@ fun MarketDataComposable(marketData: MarketData, currency: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Surface(
-            color = MaterialTheme.colors.primary,
+            color = MaterialTheme.colors.background,
             shape = RoundedCornerShape(6.dp),
-            border = BorderStroke(2.dp, MaterialTheme.colors.onBackground),
+            border = BorderStroke(2.dp, MaterialTheme.colors.primary),
             modifier = Modifier.width(300.dp).padding(start = 10.dp, end = 10.dp),
         ) {
             Column {
@@ -40,37 +42,37 @@ fun MarketDataComposable(marketData: MarketData, currency: String) {
 
                 if (marketData.marketCap?.usd != null && marketData.marketCap.rub != null)
                     MarketDataItem(
-                        "Market Cap",
+                        stringResource(R.string.market_cap),
                         if (currency == "USD") marketData.marketCap.usd else marketData.marketCap.rub,
                         currency
                     )
 
                 if (marketData.fullyDilutedValuation?.usd != null && marketData.fullyDilutedValuation.rub != null)
                     MarketDataItem(
-                        "Fully Diluted Valuation",
+                        stringResource(R.string.fully_diluted_valuation),
                         if (currency == "USD") marketData.fullyDilutedValuation.usd else marketData.fullyDilutedValuation.rub,
                         currency
                     )
 
                 if (marketData.totalVolume?.usd != null && marketData.totalVolume.rub != null)
                     MarketDataItem(
-                        "Total Volume",
+                        stringResource(R.string.total_volume),
                         if (currency == "USD") marketData.totalVolume.usd else marketData.totalVolume.rub,
                         currency
                     )
                 if (marketData.totalSupply != null)
                     MarketDataItem(
-                        "Total Supply",
+                        stringResource(R.string.total_supply),
                         marketData.totalSupply
                     )
                 if (marketData.maxSupply != null)
                     MarketDataItem(
-                        "Max Supply",
+                        stringResource(R.string.max_supply),
                         marketData.maxSupply
                     )
                 if (marketData.circulatingSupply != null)
                     MarketDataItem(
-                        "Circulating Supply",
+                        stringResource(R.string.circulating_supply),
                         marketData.circulatingSupply
                     )
                 Spacer(modifier = Modifier.height(5.dp))

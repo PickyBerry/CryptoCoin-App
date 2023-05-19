@@ -1,6 +1,7 @@
 package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
 
+import android.content.Context
 import android.graphics.Paint
 import androidx.compose.foundation.Canvas
 import androidx.compose.material.MaterialTheme
@@ -13,6 +14,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import com.pickyberry.rtuitlab_recruit.R
 import java.util.*
 
 
@@ -20,13 +22,14 @@ import java.util.*
 fun HistoricalDataChart(
     modifier: Modifier = Modifier,
     data: List<Pair<Float, Float>> = emptyList(),
+    context: Context
 ) {
 
     val spacing = 100f
     val max = remember(data) { data.maxOfOrNull { it.second }?.toFloat() ?: 1f }
     val min = remember(data) { data.minOfOrNull { it.second }?.toFloat() ?: 0f }
     val lineColor = MaterialTheme.colors.secondary
-    val textColor = MaterialTheme.colors.onPrimary.toArgb()
+    val textColor = MaterialTheme.colors.onBackground.toArgb()
     val paintForHorizontalAxis = Paint().apply {
         color = textColor
         textAlign = Paint.Align.CENTER
@@ -36,7 +39,7 @@ fun HistoricalDataChart(
     Canvas(modifier = modifier) {
 
         //Months at the bottom line
-        val months = getMonthNames(data[0].first.toLong())
+        val months = getMonthNames(data[0].first.toLong(),context)
         val spaceBetweenMonths = (size.width - spacing) / months.size
         months.forEachIndexed { index, it ->
             drawContext.canvas.nativeCanvas.apply {
@@ -95,23 +98,10 @@ fun HistoricalDataChart(
 }
 
 //Display four months starting from the first piece of data time
-fun getMonthNames(timestamp: Long): List<String> {
+fun getMonthNames(timestamp: Long, context: Context): List<String> {
     val calendar = Calendar.getInstance()
     calendar.timeInMillis = timestamp
-    val monthNames = arrayOf(
-        "JANUARY",
-        "FEBRUARY",
-        "MARCH",
-        "APRIL",
-        "MAY",
-        "JUNE",
-        "JULY",
-        "AUGUST",
-        "SEPTEMBER",
-        "OCTOBER",
-        "NOVEMBER",
-        "DECEMBER"
-    )
+    val monthNames = context.resources.getStringArray(R.array.months)
     val startIndex = calendar.get(Calendar.MONTH)
     val months = mutableListOf<String>()
     for (i in 0 until 4) {

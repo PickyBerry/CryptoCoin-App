@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,6 +28,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.zxing.integration.android.IntentIntegrator
+import com.pickyberry.rtuitlab_recruit.R
 import com.pickyberry.rtuitlab_recruit.presentation.ScannerCaptureActivity
 
 
@@ -52,10 +54,10 @@ fun CoinsListScreen(
 
 
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.primary)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)
     )
     {
-        Row(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.primary), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.background), verticalAlignment = Alignment.CenterVertically) {
 
             //Search query input
             OutlinedTextField(
@@ -64,7 +66,7 @@ fun CoinsListScreen(
                     viewModel.search(it)
                 },
                 placeholder = {
-                    Text(text = "Search...")
+                    Text(text = stringResource(R.string.search))
                 },
                 modifier = Modifier.padding(16.dp).weight(1f),
                 maxLines = 1,
@@ -81,7 +83,7 @@ fun CoinsListScreen(
                 Icon(
                     imageVector = Icons.Filled.QrCodeScanner,
                     contentDescription = "",
-                    tint = MaterialTheme.colors.onBackground,
+                    tint = MaterialTheme.colors.primary,
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -106,19 +108,19 @@ fun CoinsListScreen(
                         val selectedTabIndex = remember { mutableStateOf(if (viewModel.state.displayingFavorites) 1 else 0) }
                         TabRow(
                             selectedTabIndex = selectedTabIndex.value,
-                            backgroundColor = MaterialTheme.colors.primary
+                            backgroundColor = MaterialTheme.colors.background
                         ) {
                             Tab(
                                 selected = selectedTabIndex.value == 0,
                                 onClick = { viewModel.toggleFavorites(false)
                                     selectedTabIndex.value=0 },
-                                text = { Text("All Coins") }
+                                text = { Text(stringResource(R.string.all_coins)) }
                             )
                             Tab(
                                 selected = selectedTabIndex.value == 1,
                                 onClick = { viewModel.toggleFavorites(true)
                                     selectedTabIndex.value=1},
-                                text = { Text("Favorite Coins") }
+                                text = { Text(stringResource(R.string.favorite_coins)) }
                             )
                         }
                     }
@@ -131,12 +133,12 @@ fun CoinsListScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(MaterialTheme.colors.onBackground),
+                                .background(MaterialTheme.colors.primary),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Spacer(modifier = Modifier.width(80.dp))
                             Text(
-                                text = "Coin",
+                                text = stringResource(R.string.coin),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp,
                                 color = Color.White,
@@ -144,14 +146,14 @@ fun CoinsListScreen(
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = "Price",
+                                text = stringResource(R.string.price),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp,
                                 color = Color.White,
                                 modifier = Modifier.weight(2f)
                             )
                             Text(
-                                text = "24h",
+                                text = stringResource(R.string.hour_24),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp,
                                 maxLines = 2,
@@ -160,7 +162,7 @@ fun CoinsListScreen(
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = "24h market cap",
+                                text = stringResource(R.string.hour_24_market_cap),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 10.sp,
                                 maxLines = 2,

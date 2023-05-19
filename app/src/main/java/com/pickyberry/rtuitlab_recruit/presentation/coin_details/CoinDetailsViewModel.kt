@@ -54,10 +54,12 @@ class CoinDetailsViewModel @Inject constructor(
                     }
                 }
 
-                if (coinDetailsResult is Resource.Error) state =
-                    state.copy(error = coinDetailsResult.message!!)
-                if (historicalDataResult is Resource.Error) state =
-                    state.copy(error = historicalDataResult.message!!)
+                withContext(Dispatchers.Main) {
+                    if (coinDetailsResult is Resource.Error) state =
+                        state.copy(error = coinDetailsResult.message!!)
+                    if (historicalDataResult is Resource.Error) state =
+                        state.copy(error = historicalDataResult.message!!)
+                }
             }.collect()
 
             withContext(Dispatchers.Main) {

@@ -56,7 +56,7 @@ fun CoinItemComposable(
                     text = coinItem.name,
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 14.sp,
-                    color = MaterialTheme.colors.onPrimary,
+                    color = MaterialTheme.colors.onBackground,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     modifier = Modifier.weight(1f)
@@ -66,7 +66,7 @@ fun CoinItemComposable(
             Text(
                 text = coinItem.symbol,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onBackground
+                color = MaterialTheme.colors.primary
             )
         }
         Spacer(modifier = Modifier.width(10.dp))
@@ -74,7 +74,7 @@ fun CoinItemComposable(
             text = "$" + coinItem.currentPrice,
             fontWeight = FontWeight.SemiBold,
             fontSize = 14.sp,
-            color = MaterialTheme.colors.onPrimary,
+            color = MaterialTheme.colors.onBackground,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
             modifier = Modifier.weight(2f)

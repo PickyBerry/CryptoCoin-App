@@ -1,4 +1,37 @@
 <resources>
     <string name="app_name">RTUITLab_Recruit</string>
     <string name="description">image from URL</string>
+    <string name="error_no_internet_connection">No internet connection</string>
+    <string name="search">Search...</string>
+    <string name="all_coins">All Coins</string>
+    <string name="coin">Coin</string>
+    <string name="price">Price</string>
+    <string name="hour_24">24h</string>
+    <string name="hour_24_market_cap">24h market cap</string>
+    <string name="coin_details">Coin Details</string>
+    <string name="no_permission">No permission!</string>
+    <string name="hashing_algorithm">HASHING ALGORITHM </string>
+    <string name="home_page">Home page</string>
+    <string name="blockchain_site">Blockchain site</string>
+    <string name="market_cap">Market Cap</string>
+    <string name="fully_diluted_valuation">Fully Diluted Valuation</string>
+    <string name="total_volume">Total Volume</string>
+    <string name="total_supply">Total Supply</string>
+    <string name="max_supply">Max Supply</string>
+    <string name="circulating_supply">Circulating Supply</string>
+    <string name="favorite_coins">Favorite Coins</string>
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
 </resources>

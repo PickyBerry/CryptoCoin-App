@@ -2,7 +2,6 @@ package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
 import android.app.TimePickerDialog
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -61,12 +60,12 @@ fun CoinDetailsScreen(
         state = swipeRefreshState,
         onRefresh = { viewModel.refresh() }
     ) {
-        LazyColumn(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.primary)) {
+        LazyColumn(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
             //Top Bar
             item {
                 TopAppBar(
-                    title = { Text(text = "Coin Details") },
+                    title = { Text(text = stringResource(R.string.coin_details)) },
 
                     //Go back button
                     navigationIcon = {
@@ -81,7 +80,7 @@ fun CoinDetailsScreen(
                             //Switch between USD and RUB
                             TextButton(
                                 onClick = { viewModel.updateCurrency() },
-                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.background)
                             ) { Text(text = viewModel.state.currency, fontSize = 16.sp) }
 
                             //Toggle favorite
@@ -142,7 +141,7 @@ fun CoinDetailsScreen(
                                             true
                                         ).show()
 
-                                    } else Toast.makeText(context, "No permission!", Toast.LENGTH_SHORT).show()
+                                    } else Toast.makeText(context, context.getString(R.string.no_permission), Toast.LENGTH_SHORT).show()
                                 }
                             }) {
                                 Icon(
@@ -152,8 +151,8 @@ fun CoinDetailsScreen(
                             }
                         }
                     },
-                    backgroundColor = MaterialTheme.colors.primary,
-                    contentColor = MaterialTheme.colors.onPrimary
+                    backgroundColor = MaterialTheme.colors.background,
+                    contentColor = MaterialTheme.colors.onBackground
                 )
 
             }
@@ -189,14 +188,14 @@ fun CoinDetailsScreen(
                                     ?: "") + ("  (" + viewModel.state.coinDetails?.symbol?.uppercase() + ")") else "",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 22.sp,
-                                color = MaterialTheme.colors.onPrimary,
+                                color = MaterialTheme.colors.onBackground,
                             )
 
                             Text(
                                 text = if (viewModel.state.coinDetails?.marketData?.currentPrice?.usd != null) if (viewModel.state.currency == "USD") "$" + viewModel.state.coinDetails?.marketData?.currentPrice?.usd else "₽ " + viewModel.state.coinDetails?.marketData?.currentPrice?.rub else "",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 18.sp,
-                                color = MaterialTheme.colors.onBackground,
+                                color = MaterialTheme.colors.primary,
                             )
 
                         }
@@ -213,18 +212,15 @@ fun CoinDetailsScreen(
                                 .fillMaxWidth()
                                 .height(200.dp)
                                 .padding(end = 20.dp)
-                        )
+                        , context = context)
                     }
 
                     Spacer(modifier = Modifier.height(10.dp))
 
                     //Getting description data
                     val descriptions = viewModel.state.coinDetails?.description
-                    val description = if (descriptions?.get(0)?.isNotEmpty() == true)
-                        descriptions[0] else if (descriptions?.get(1)
-                            ?.isNotEmpty() == true
-                    ) descriptions[1] else ""
-                    if (descriptions != null) descriptions?.get(0)
+                    val description = if ( Locale.getDefault().language =="ru" && descriptions?.get(1)!!.isNotEmpty()) descriptions.get(1)
+                        else descriptions?.get(0) ?: ""
 
                     if (viewModel.state.coinDetails?.description?.get(0)?.isNotEmpty() == true ||
                         viewModel.state.coinDetails?.description?.get(1)?.isNotEmpty() == true
@@ -254,10 +250,10 @@ fun CoinDetailsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
-                                "HASHING ALGORITHM ${viewModel.state.coinDetails?.hashingAlgorithm}",
+                                stringResource(R.string.hashing_algorithm) +" ${viewModel.state.coinDetails?.hashingAlgorithm}",
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 20.sp,
-                                color = MaterialTheme.colors.onBackground
+                                color = MaterialTheme.colors.primary
                             )
                         }
                     }

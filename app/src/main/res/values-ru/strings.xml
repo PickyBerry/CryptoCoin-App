@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">RTUITLab_Recruit</string>
+    <string name="description">image from URL</string>
+    <string name="error_no_internet_connection">Нет соединения с интернетом</string>
+    <string name="search">Искать...</string>
+    <string name="all_coins">Все</string>
+    <string name="favorite_coins">Избранное</string>
+    <string name="coin">Валюта</string>
+    <string name="price">Цена</string>
+    <string name="hour_24">24ч</string>
+    <string name="hour_24_market_cap">24ч капитал./</string>
+    <string name="coin_details">Подробности</string>
+    <string name="no_permission">Не получено разрешение!</string>
+    <string name="hashing_algorithm">АЛГОРИТМ ХЭШИРОВАНИЯ </string>
+    <string name="home_page">Домашняя страница</string>
+    <string name="blockchain_site">Сайт блокчейна</string>
+    <string name="market_cap">Рыночная капитализация</string>
+    <string name="fully_diluted_valuation">Полностью разводненная оценка</string>
+    <string name="total_volume">Общий объём</string>
+    <string name="total_supply">Общий запас</string>
+    <string name="max_supply">Максимальный запас</string>
+    <string name="circulating_supply">Запас в обороте</string>
+    <string-array name="months">
+        <item>Январь</item>
+        <item>Февраль</item>
+        <item>Март</item>
+        <item>Апрель</item>
+        <item>Май</item>
+        <item>Июнь</item>
+        <item>Июль</item>
+        <item>Август</item>
+        <item>Сентябрь</item>
+        <item>Октябрь</item>
+        <item>Ноябрь</item>
+        <item>Декабрь</item>
+    </string-array>
+</resources>

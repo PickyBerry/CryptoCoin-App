@@ -1,7 +1,6 @@
 package com.pickyberry.rtuitlab_recruit.data
 
 import android.app.Application
-import android.util.Log
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.database.entity.HistoricalDataEntity
 import com.pickyberry.rtuitlab_recruit.data.mapper.asCoinDetails
