@@ -8,7 +8,7 @@ It is easy to install, to use and helps to know most important information about
 ![D1m0w7IgWRE](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/a7b3c72c-7baf-4910-a2e9-b42c95223df8)
 
 
-## Functionality
+## Features
  * List of cryptocoins
  * Search by name and ticker symbol
  * Detailed information on every coin in RUB/USD
@@ -31,3 +31,26 @@ It is easy to install, to use and helps to know most important information about
 ![jQEIYc2Ezd4](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/3ad7860f-086e-4dab-a72f-45d696eba9f0)
 
 ![xLWaqQFVloQ](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/b120cb5c-7f2c-4ef2-8275-5bdb0238d957)
+
+## Built With
+
+* Kotlin
+* Coroutines & Flows
+* Dagger Hilt
+* Jetpack Compose
+* Retrofit & Gson
+* Room
+* Glide
+* ZXing
+* CoinGecko API
+
+### Also
+* Clean Architecture (Data/Domain/Presentation) w/ MVVM for great scalability, cohesion and weak coupling. Recommended by Google
+* Material Design. Recommended by Google
+
+## Requirements
+* Android min SDK >=26
+* Android version 8.0 Oreo
+* Permissions for best app experience: INTERNET,ACCESS_NETWORK_STATE,POST_NOTIFICATIONS,SCHEDULE_EXACT_ALARM
+
+## Made By PickyBerry with ♥
