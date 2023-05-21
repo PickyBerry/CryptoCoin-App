@@ -62,6 +62,7 @@ class CoinsListViewModel @Inject constructor(
                             is Resource.Success -> {
                                 result.data?.let {
                                     state = state.copy(coins = it, error = "")
+                                    sort(state.sorted)
                                 }
                             }
                             is Resource.Error -> {
@@ -91,6 +92,7 @@ class CoinsListViewModel @Inject constructor(
                             is Resource.Success -> {
                                     result.data?.let {
                                         state = state.copy(coins = it, error = "")
+                                        sort(state.sorted)
                                     }
                             }
                             is Resource.Error -> {
