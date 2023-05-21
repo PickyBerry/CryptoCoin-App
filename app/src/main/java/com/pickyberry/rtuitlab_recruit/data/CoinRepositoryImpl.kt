@@ -93,9 +93,9 @@ class CoinRepositoryImpl @Inject constructor(
                 }
             else Resource.Error(response.message())
             coinDetails?.data?.let { data ->
-                emit(Resource.Success(data))
-                emit(Resource.Loading(false))
                 db.coinDetailsDao.insertCoinDetails(data.asCoinDetailsEntity())
+                emit(Resource.Success(db.coinDetailsDao.getCoinDetails(id).asCoinDetails()))
+                emit(Resource.Loading(false))
             }
         }
     }

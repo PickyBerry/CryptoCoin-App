@@ -10,9 +10,6 @@ interface HistoricalDataDao {
         historicalDataEntity: HistoricalDataEntity
     )
 
-    @Update
-    suspend fun updateHistoricalData(historicalDataEntity: HistoricalDataEntity)
-
     @Query("SELECT * FROM historical_data_entity WHERE :id == id")
     suspend fun getHistoricalData(id:String): HistoricalDataEntity
 }
