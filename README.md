@@ -3,9 +3,11 @@
 This is a classic cryptocurrency offline-first application for searching, studying, and inspecting historical cryptocurrency exchange rate data.
 It is easy to install, to use and helps to know most important information about cryptocoins at any time.
 
-![ho1tOhKbX3c](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/6d9b3e9b-c693-4cb2-8c7d-243030b17c41)
+![ho1tOhKbX3c](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/d643bf94-92f8-4c9e-b899-42639276c4e3)
 
-![D1m0w7IgWRE](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/a7b3c72c-7baf-4910-a2e9-b42c95223df8)
+
+![D1m0w7IgWRE](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/28a76e81-e7d1-442d-806b-b5c6d478f3cd)
+
 
 
 ## Features
@@ -25,12 +27,14 @@ It is easy to install, to use and helps to know most important information about
 * Light/Dark Theme
 * English and Russian localization
 
+![CjNToqoH-GQ](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/d912491e-7da5-49f0-a872-57d71b74099b)
 
-![CjNToqoH-GQ](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/9fe1ded3-7d55-4731-a3a8-3433b6c51079)
+![jQEIYc2Ezd4](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/c92cca7d-2289-49a2-91a7-13aed333b2f4)
 
-![jQEIYc2Ezd4](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/3ad7860f-086e-4dab-a72f-45d696eba9f0)
+![xLWaqQFVloQ](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/966fc96a-c404-4e72-a5fa-eb825cd838ac)
 
-![xLWaqQFVloQ](https://github.com/PickyBerry/RTUITLab_Recruit/assets/92033502/b120cb5c-7f2c-4ef2-8275-5bdb0238d957)
+
+
 
 ## Built With
 
