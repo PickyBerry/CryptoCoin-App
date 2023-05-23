@@ -77,6 +77,8 @@ fun CoinDetailsScreen(
                     actions = {
                         if (viewModel.state.coinDetails != null) {
 
+                            notificationEnabled.value = sharedPreferences.getBoolean("${viewModel.state.coinDetails?.id}.enabled", false)
+
                             //Switch between USD and RUB
                             TextButton(
                                 onClick = { viewModel.updateCurrency() },
