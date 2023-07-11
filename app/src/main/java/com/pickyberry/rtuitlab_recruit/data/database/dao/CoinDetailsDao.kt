@@ -2,6 +2,7 @@ package com.pickyberry.rtuitlab_recruit.data.database.dao
 
 import androidx.room.*
 import com.pickyberry.rtuitlab_recruit.data.database.entity.CoinDetailsEntity
+import com.pickyberry.rtuitlab_recruit.data.database.entity.CoinItemEntity
 
 
 @Dao

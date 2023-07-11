@@ -3,9 +3,11 @@ package com.pickyberry.rtuitlab_recruit.presentation
 import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.pickyberry.rtuitlab_recruit.R
 import com.pickyberry.rtuitlab_recruit.presentation.coin_details.CoinDetailsScreen
 import com.pickyberry.rtuitlab_recruit.presentation.coins_list.CoinsListScreen
 
@@ -30,7 +32,7 @@ fun CoinApp() {
 
                 //If QR is correct, navigate to the specific coin details screen
                 onQrCodeScanned = { qr ->
-                    if (qr.startsWith("https://rtuitlab.dev/crypto/"))
+                    if (qr.startsWith(context.resources.getString(R.string.qr_url)))
                         navController.navigate("$DestinationDetailsRoot/${qr.split('-').last()}")
                     else Toast.makeText(context, "Wrong QR", Toast.LENGTH_SHORT).show()
                 })

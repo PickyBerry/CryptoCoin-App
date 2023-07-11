@@ -1,12 +1,16 @@
 package com.pickyberry.rtuitlab_recruit.di
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.room.Room
 import com.google.gson.GsonBuilder
 import com.pickyberry.rtuitlab_recruit.data.database.CoinsDatabase
 import com.pickyberry.rtuitlab_recruit.data.network.Api
 import com.pickyberry.rtuitlab_recruit.data.network.CoinPriceDeserializer
 import com.pickyberry.rtuitlab_recruit.data.network.SimpleCoinPriceDto
+import com.pickyberry.rtuitlab_recruit.domain.NetworkChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,6 +49,27 @@ class DataModule {
             CoinsDatabase::class.java,
             "cryptocoinsdb.db"
         ).fallbackToDestructiveMigration().build()
+    }
+
+
+    @Provides
+    fun provideNetworkChecker(application: Application): NetworkChecker {
+        return object : NetworkChecker {
+            override fun isNetworkAvailable(): Boolean {
+                val connectivityManager = application.getSystemService(
+                    Context.CONNECTIVITY_SERVICE
+                ) as ConnectivityManager
+                val activeNetwork = connectivityManager.activeNetwork ?: return false
+                val capabilities =
+                    connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+                return when {
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                    else -> false
+                }
+            }
+        }
     }
 
 }

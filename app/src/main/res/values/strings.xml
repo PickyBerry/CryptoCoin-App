@@ -21,6 +21,7 @@
     <string name="circulating_supply">Circulating Supply</string>
     <string name="favorite_coins">Favorite Coins</string>
     <string name="sort">Sort: </string>
+    <string name="qr_url">https://rtuitlab.dev/crypto/</string>
     <string-array name="months">
         <item>January</item>
         <item>February</item>

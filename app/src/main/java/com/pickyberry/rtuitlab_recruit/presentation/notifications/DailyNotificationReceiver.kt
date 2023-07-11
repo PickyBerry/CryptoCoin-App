@@ -12,9 +12,10 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkRequest
 import androidx.core.app.NotificationCompat
+import com.pickyberry.rtuitlab_recruit.MainActivity
 import com.pickyberry.rtuitlab_recruit.R
 import com.pickyberry.rtuitlab_recruit.domain.CoinRepository
-import com.pickyberry.rtuitlab_recruit.util.InternetValidation
+import com.pickyberry.rtuitlab_recruit.domain.NetworkChecker
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +29,9 @@ class DailyNotificationReceiver : BroadcastReceiver() {
 
     @Inject
     lateinit var repository: CoinRepository
+
+    @Inject
+    lateinit var networkChecker: NetworkChecker
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -46,7 +50,7 @@ class DailyNotificationReceiver : BroadcastReceiver() {
             if (notificationEnabled) {
 
                 //If user doesn't have Internet connection - we'll send the notification as soon as it appears
-                if (InternetValidation.hasInternetConnection(context))
+                if (networkChecker.isNetworkAvailable())
                     prepareAndSendNotification(context, coinId!!, sharedPreferences)
                 else {
                     val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -108,12 +112,17 @@ class DailyNotificationReceiver : BroadcastReceiver() {
                 ) + " since yesterday)")
 
 
+            //Intent to open app on click
+            val openAppIntent = Intent(context, MainActivity::class.java)
+            openAppIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            val contentIntent = PendingIntent.getActivity(context, 0, openAppIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
             //Build and send notification
             val notification =
                 NotificationCompat.Builder(context, "channelId")
                     .setContentTitle(title)
                     .setContentText(content)
+                    .setContentIntent(contentIntent)
                     .setSmallIcon(R.drawable.baseline_currency_bitcoin_24)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .build()
@@ -127,7 +136,7 @@ class DailyNotificationReceiver : BroadcastReceiver() {
     private fun sendNextNotification(
         context: Context,
         sharedPreferences: SharedPreferences,
-        coinId: String,
+        coinId: String
     ) {
 
         //Get the time for notification

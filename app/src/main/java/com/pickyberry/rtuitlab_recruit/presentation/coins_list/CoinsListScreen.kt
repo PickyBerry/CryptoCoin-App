@@ -12,9 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.QrCodeScanner
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +38,14 @@ fun CoinsListScreen(
 ) {
     val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = viewModel.state.isLoading)
     val context = LocalContext.current
+    val error = remember { mutableStateOf(false) }
+    LaunchedEffect(viewModel.state.error) {
+        if (viewModel.state.error.isNotEmpty() && !error.value) {
+            error.value = true
+            Toast.makeText(context, viewModel.state.error, Toast.LENGTH_SHORT).show()
 
+        }
+    }
     val qrScanLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -98,6 +103,7 @@ fun CoinsListScreen(
             onRefresh = {
                 viewModel.toggleFavorites(false)
                 viewModel.refresh()
+                error.value=false
             }
         ) {
 
@@ -243,7 +249,6 @@ fun CoinsListScreen(
             }
         }
     }
-    if (viewModel.state.error.isNotEmpty())
-        Toast.makeText(LocalContext.current, viewModel.state.error, Toast.LENGTH_SHORT).show()
+
 }
 

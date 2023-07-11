@@ -2,6 +2,7 @@ package com.pickyberry.rtuitlab_recruit.presentation.coin_details
 
 import android.app.TimePickerDialog
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -10,9 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +44,13 @@ fun CoinDetailsScreen(
     val context = LocalContext.current
     val timePickerState = remember { mutableStateOf(Calendar.getInstance()) }
     val sharedPreferences = context.getSharedPreferences("notification_prefs", Context.MODE_PRIVATE)
-
+    val error = remember { mutableStateOf(false) }
+    LaunchedEffect(viewModel.state.error) {
+        if (viewModel.state.error.isNotEmpty() && !error.value) {
+            error.value = true
+            Toast.makeText(context, viewModel.state.error, Toast.LENGTH_SHORT).show()
+        }
+    }
     RequestNotificationsPermission {
         viewModel.state = viewModel.state.copy(permissionGranted = true)
     }
@@ -58,7 +63,10 @@ fun CoinDetailsScreen(
 
     SwipeRefresh(
         state = swipeRefreshState,
-        onRefresh = { viewModel.refresh() }
+        onRefresh = {
+            viewModel.refresh()
+            error.value=false
+        }
     ) {
         LazyColumn(modifier = Modifier.fillMaxSize().background(MaterialTheme.colors.background)) {
 
@@ -221,7 +229,7 @@ fun CoinDetailsScreen(
 
                     //Getting description data
                     val descriptions = viewModel.state.coinDetails?.description
-                    val description = if ( Locale.getDefault().language =="ru" && descriptions?.get(1)!!.isNotEmpty()) descriptions.get(1)
+                    val description = if ( Locale.getDefault().language =="ru" && descriptions?.get(1)?.isNotEmpty() != false) descriptions?.get(1) ?: ""
                         else descriptions?.get(0) ?: ""
 
                     if (viewModel.state.coinDetails?.description?.get(0)?.isNotEmpty() == true ||
@@ -264,8 +272,7 @@ fun CoinDetailsScreen(
             }
         }
     }
-    if (viewModel.state.error.isNotEmpty())
-        Toast.makeText(LocalContext.current, viewModel.state.error, Toast.LENGTH_SHORT).show()
+
 }
 
 
